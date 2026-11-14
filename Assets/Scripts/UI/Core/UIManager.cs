@@ -27,6 +27,10 @@ namespace Outpost.UI.Core
         [SerializeField] private SettingsUI _settingsUI;
         [SerializeField] private MissionNotificationUI _notificationUI;
         [SerializeField] private CinematicPresentation _cinematicPresentation;
+        [SerializeField] private TutorialOverlayUI _tutorialOverlay;
+        [SerializeField] private StationActivationPresentation _stationActivation;
+        [SerializeField] private EducationalSummaryModal _educationalSummary;
+        [SerializeField] private MissionPerformanceScreen _performanceScreen;
 
         [Header("Initial Configuration")]
         [SerializeField] private UIState _startingState = UIState.GameplayHUD;
@@ -181,5 +185,14 @@ namespace Outpost.UI.Core
         {
             UIEventBus.PublishAlertLevel(level, reason);
         }
+
+        public TutorialOverlayUI TutorialOverlay => _tutorialOverlay;
+        public StationActivationPresentation StationActivation => _stationActivation;
+        public EducationalSummaryModal EducationalSummary => _educationalSummary;
+        public MissionPerformanceScreen PerformanceScreen => _performanceScreen;
+        public CinematicPresentation Cinematics => _cinematicPresentation;
+        public DialogueManager Dialogues => _dialogueManager;
+        public LunarMapUI Map => _lunarMapUI;
+        public HUDController HUD => _hudController;
     }
 }

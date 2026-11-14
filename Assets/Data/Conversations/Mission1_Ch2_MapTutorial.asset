@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d17d177157259c5a2e4ba5d23bfc8b9, type: 3}
+  m_Name: Mission1_Ch2_MapTutorial
+  m_EditorClassIdentifier: 
+  ConversationId: Mission1_Ch2_MapTutorial
+  MissionChapter: 'Chapter 2: Outpost Establishment'
+  TriggerType: 1
+  IsGroupDiscussion: 0
+  IsCinematicConversation: 0
+  Lines:
+  - Speaker: 4
+    Expression: 0
+    DialogueText: "Navigational guidance ready. The interactive station map displays your live position, outpost structures, and active objectives."
+    EducationalConceptNote: "Top-down cartography prevents orientation loss in featureless lunar terrain."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 5
+    CrewReactions: []
+  - Speaker: 1
+    Expression: 0
+    DialogueText: "Don't forget to plot waypoints if you venture beyond the habitat perimeter toward the solar farm."
+    EducationalConceptNote: "Waypoints calculate line-of-sight distance and elevation changes."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 1
+    CrewReactions: []
+  - Speaker: 0
+    Expression: 0
+    DialogueText: "All crew members must confirm destination coordinates on the map before commencing EVA maneuvers."
+    EducationalConceptNote: "Surface navigation protocol ensures astronauts never exceed communications range."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 1
+    CrewReactions: []
+  Choices: []
+  NextConversationId: ''
+  OnConversationCompleted:
+    m_PersistentCalls:
+      m_Calls: []

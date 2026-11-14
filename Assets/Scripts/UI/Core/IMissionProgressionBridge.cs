@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using Outpost.UI.HUD;
 using Outpost.UI.ORION;
+using Outpost.UI.Emergency;
 
 namespace Outpost.UI.Core
 {
@@ -36,10 +37,16 @@ namespace Outpost.UI.Core
         // Phase 2: Map & Navigation
         void SetMapWaypoint(string locationId);
         void UnlockMapLocation(string locationId);
+
+        // Phase 4: Master Mission Presentation Flow (Chapters 1 to 7)
+        void AdvanceToChapter(int chapterNumber, Action onComplete = null);
+        MissionChapterStage GetCurrentChapter();
+        EmergencyRepairOption GetChosenEmergencyStrategy();
     }
 
     /// <summary>
-    /// Default bridge implementation forwarding calls into UIEventBus, UIManager, and ORIONInterface.
+    /// Default bridge implementation forwarding calls into UIEventBus, UIManager, ORIONInterface,
+    /// and MissionPresentationOrchestrator.
     /// </summary>
     public class MissionProgressionBridge : MonoBehaviour, IMissionProgressionBridge
     {
@@ -162,6 +169,55 @@ namespace Outpost.UI.Core
         public void UnlockMapLocation(string locationId)
         {
             UIManager.Instance?.GetComponentInChildren<Map.LunarMapUI>()?.MarkLocationDiscovered(locationId);
+        }
+
+        public void AdvanceToChapter(int chapterNumber, Action onComplete = null)
+        {
+            if (MissionPresentationOrchestrator.Instance == null)
+            {
+                Debug.LogWarning("[MissionProgressionBridge] MissionPresentationOrchestrator not active.");
+                onComplete?.Invoke();
+                return;
+            }
+
+            switch (chapterNumber)
+            {
+                case 1:
+                    MissionPresentationOrchestrator.Instance.StartChapter1Arrival(onComplete);
+                    break;
+                case 2:
+                    MissionPresentationOrchestrator.Instance.StartChapter2OutpostEstablishment(onComplete);
+                    break;
+                case 3:
+                    MissionPresentationOrchestrator.Instance.StartChapter3TheFirstWarning(onComplete);
+                    break;
+                case 4:
+                    MissionPresentationOrchestrator.Instance.StartChapter4LifeSupportEmergency(onComplete);
+                    break;
+                case 5:
+                    MissionPresentationOrchestrator.Instance.StartChapter5TheFinalDecision((opt) => onComplete?.Invoke());
+                    break;
+                case 6:
+                    MissionPresentationOrchestrator.Instance.StartChapter6Recovery(onComplete);
+                    break;
+                case 7:
+                    MissionPresentationOrchestrator.Instance.StartChapter7MissionComplete(onComplete);
+                    break;
+            }
+        }
+
+        public MissionChapterStage GetCurrentChapter()
+        {
+            return MissionPresentationOrchestrator.Instance != null
+                ? MissionPresentationOrchestrator.Instance.CurrentStage
+                : MissionChapterStage.NotStarted;
+        }
+
+        public EmergencyRepairOption GetChosenEmergencyStrategy()
+        {
+            return MissionPresentationOrchestrator.Instance != null
+                ? MissionPresentationOrchestrator.Instance.ChosenEmergencyOption
+                : EmergencyRepairOption.None;
         }
     }
 }

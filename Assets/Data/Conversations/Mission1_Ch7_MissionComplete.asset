@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d17d177157259c5a2e4ba5d23bfc8b9, type: 3}
+  m_Name: Mission1_Ch7_MissionComplete
+  m_EditorClassIdentifier: 
+  ConversationId: Mission1_Ch7_MissionComplete
+  MissionChapter: 'Chapter 7: Mission Complete'
+  TriggerType: 1
+  IsGroupDiscussion: 1
+  IsCinematicConversation: 0
+  Lines:
+  - Speaker: 0
+    Expression: 1
+    DialogueText: "Mission 1 complete. We have proven that teamwork, science, and engineering can establish a permanent home at the lunar south pole."
+    EducationalConceptNote: "Mission 1 validates habitat infrastructure for sustained lunar scientific operations."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 1
+    CrewReactions: []
+  - Speaker: 1
+    Expression: 1
+    DialogueText: "Power grid, habitat pressure, and rover systems are fully operational. Our emergency repairs held rock-solid."
+    EducationalConceptNote: "Redundant systems and rapid troubleshooting keep space stations operational."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 1
+    CrewReactions: []
+  - Speaker: 2
+    Expression: 1
+    DialogueText: "Our science instruments are transmitting fresh data on polar water ice and regolith chemistry back to Earth."
+    EducationalConceptNote: "Lunar science helps us understand planetary history and prepare for deep space exploration."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 1
+    CrewReactions: []
+  - Speaker: 3
+    Expression: 0
+    DialogueText: "All four crew members are healthy, resilient, and in high spirits. Life support is fully balanced."
+    EducationalConceptNote: "Crew health and mutual trust are the foundation of space exploration."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 1
+    CrewReactions: []
+  - Speaker: 4
+    Expression: 0
+    DialogueText: "Mission 1 objectives accomplished. Outpost status: Operational, sustainable, and thriving. Outstanding performance, crew."
+    EducationalConceptNote: "ORION logs all mission milestones into the permanent lunar archive."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 5
+    CrewReactions: []
+  Choices: []
+  NextConversationId: ''
+  OnConversationCompleted:
+    m_PersistentCalls:
+      m_Calls: []

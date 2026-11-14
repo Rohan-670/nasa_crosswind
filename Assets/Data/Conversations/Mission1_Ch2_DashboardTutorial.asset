@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d17d177157259c5a2e4ba5d23bfc8b9, type: 3}
+  m_Name: Mission1_Ch2_DashboardTutorial
+  m_EditorClassIdentifier: 
+  ConversationId: Mission1_Ch2_DashboardTutorial
+  MissionChapter: 'Chapter 2: Outpost Establishment'
+  TriggerType: 1
+  IsGroupDiscussion: 0
+  IsCinematicConversation: 0
+  Lines:
+  - Speaker: 4
+    Expression: 0
+    DialogueText: "Life support telemetry initialized. The resource dashboard tracks eight critical life support and operational metrics."
+    EducationalConceptNote: "Telemetry monitors consumables and warns before reserves reach danger thresholds."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 5
+    CrewReactions: []
+  - Speaker: 3
+    Expression: 0
+    DialogueText: "Watch oxygen and recycled water reserves closely. Any unexpected drop could indicate a line leak."
+    EducationalConceptNote: "Astronauts consume roughly 0.84 kg of oxygen and 2.5 liters of water daily."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 1
+    CrewReactions: []
+  - Speaker: 1
+    Expression: 0
+    DialogueText: "Electricity and battery power drive all mechanical life support. Keep generation ahead of consumption."
+    EducationalConceptNote: "Batteries buffer energy during local terrain shadowing."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 1
+    CrewReactions: []
+  - Speaker: 0
+    Expression: 0
+    DialogueText: "Team, we monitor these gauges together. A safe outpost is a vigilant outpost."
+    EducationalConceptNote: "Shared crew responsibility is central to space mission safety."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 1
+    CrewReactions: []
+  Choices: []
+  NextConversationId: ''
+  OnConversationCompleted:
+    m_PersistentCalls:
+      m_Calls: []

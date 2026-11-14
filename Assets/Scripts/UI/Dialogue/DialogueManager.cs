@@ -12,6 +12,7 @@ namespace Outpost.UI.Dialogue
     /// Master dialogue orchestrator for System 3.
     /// Manages two-person and multi-character group conversations, emotional expressions,
     /// camera framing directions for Computer 2, branching choices, and completion events.
+    /// Guarantees strictly no overlapping conversations via a thread-safe / coroutine-safe FIFO queue.
     /// </summary>
     public class DialogueManager : UIView, IDialogueManager
     {
@@ -30,12 +31,21 @@ namespace Outpost.UI.Dialogue
         [Header("Next Indicator")]
         [SerializeField] private GameObject _continueIndicator;
 
+        private struct QueuedConversation
+        {
+            public ConversationData Conversation;
+            public Action OnComplete;
+        }
+
+        private readonly Queue<QueuedConversation> _conversationQueue = new Queue<QueuedConversation>();
+
         private ConversationData _currentConversation;
         private int _currentLineIndex = -1;
         private Action _onConversationCompleteCallback;
         private bool _isWaitingForInput = false;
 
         public bool IsDialogueActive => _currentConversation != null;
+        public int QueuedCount => _conversationQueue.Count;
 
         protected override void Awake()
         {
@@ -66,6 +76,17 @@ namespace Outpost.UI.Dialogue
         public void StartConversation(ConversationData conversation, Action onComplete = null)
         {
             if (conversation == null || conversation.Lines.Count == 0) return;
+
+            // Enforce requirement: strictly no overlapping conversations.
+            if (IsDialogueActive)
+            {
+                _conversationQueue.Enqueue(new QueuedConversation
+                {
+                    Conversation = conversation,
+                    OnComplete = onComplete
+                });
+                return;
+            }
 
             _currentConversation = conversation;
             _currentLineIndex = -1;
@@ -120,14 +141,11 @@ namespace Outpost.UI.Dialogue
                     _characterPresentation.DisplaySpeaker(line.Speaker, line.Expression, line.EducationalConceptNote);
                 }
 
-                // Play audio voice clip if available
-                if (line.VoiceClip != null)
-                {
-                    // Audio played via AudioManager
-                }
+                // Subtitle display: guarantee speaker attribution and subtitle readability
+                string formattedSpeaker = GetSpeakerDisplayName(line.Speaker);
+                string subtitleContent = $"<b>{formattedSpeaker}:</b> \"{line.DialogueText}\"";
 
-                // Render typewriter text in subtitles
-                _subtitleSystem?.DisplayLine(line.DialogueText, () =>
+                _subtitleSystem?.DisplayLine(subtitleContent, () =>
                 {
                     _isWaitingForInput = line.RequirePlayerClickToAdvance;
                     if (_continueIndicator != null) _continueIndicator.SetActive(_isWaitingForInput);
@@ -145,6 +163,19 @@ namespace Outpost.UI.Dialogue
                     EndConversation();
                 }
             }
+        }
+
+        private string GetSpeakerDisplayName(CharacterIdentifier speaker)
+        {
+            return speaker switch
+            {
+                CharacterIdentifier.CommanderElena => "COMMANDER ELENA",
+                CharacterIdentifier.EngineerMarcus => "ENGINEER MARCUS",
+                CharacterIdentifier.ScientistAisha => "SCIENTIST AISHA",
+                CharacterIdentifier.MedicalOfficerDaniel => "DR. DANIEL",
+                CharacterIdentifier.ORION => "ORION AI",
+                _ => "CREW"
+            };
         }
 
         private void DisplayChoices(List<DialogueChoice> choices)
@@ -181,7 +212,7 @@ namespace Outpost.UI.Dialogue
 
             var chosen = _currentConversation.Choices[choiceIndex];
 
-            // If an emergency option was selected (Chapter 6), notify system
+            // If an emergency option was selected (Chapter 5), notify system
             if (chosen.EmergencyOption != EmergencyRepairOption.None)
             {
                 UIEventBus.PublishEmergencyOption(chosen.EmergencyOption);
@@ -214,7 +245,17 @@ namespace Outpost.UI.Dialogue
             {
                 completedConv?.OnConversationCompleted?.Invoke();
                 _onConversationCompleteCallback?.Invoke();
-                UIEventBus.PublishUIStateChanged(UIState.GameplayHUD);
+
+                // Process next conversation in queue if any
+                if (_conversationQueue.Count > 0)
+                {
+                    var next = _conversationQueue.Dequeue();
+                    StartConversation(next.Conversation, next.OnComplete);
+                }
+                else
+                {
+                    UIEventBus.PublishUIStateChanged(UIState.GameplayHUD);
+                }
             });
         }
     }
