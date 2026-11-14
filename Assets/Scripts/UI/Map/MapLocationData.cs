@@ -15,6 +15,14 @@ namespace Outpost.UI.Map
         EmergencyHazard = 7
     }
 
+    public enum FacilityAvailability
+    {
+        Operational = 0,   // Fully accessible
+        Caution = 1,       // Reduced power or solar activity warning
+        EmergencyDamaged = 2,// Severed cables or life-support failure
+        Unexplored = 3      // Beyond safe comms range
+    }
+
     /// <summary>
     /// ScriptableObject defining an outpost landmark on the interactive Lunar Geo Map.
     /// Anchors to real Unity world coordinates and carries educational science facts.
@@ -26,17 +34,22 @@ namespace Outpost.UI.Map
         public string LocationId = "LOC_HABITAT";
         public string LocationName = "Main Habitat";
         public OutpostFacilityType FacilityType = OutpostFacilityType.Habitat;
+        public FacilityAvailability Availability = FacilityAvailability.Operational;
         public string GridSector = "E-5";
 
         [Header("World Space Coordinates")]
         public Vector3 WorldPosition = Vector3.zero;
 
+        [Header("Facility Purpose & Objectives")]
+        [TextArea(2, 4)] public string FacilityPurpose = "";
+        [TextArea(1, 2)] public string CurrentObjectiveHere = "";
+        [TextArea(1, 3)] public string NavigationAdvice = "";
+
         [Header("Educational Dossier")]
-        [TextArea(2, 4)] public string FacilityDescription = "";
         [TextArea(2, 4)] public string EducationalScienceFact = "";
 
         [Header("Exploration State")]
-        public bool IsDiscoveredByDefault = true;
+        public bool IsVisited = false;
         public Sprite LocationThumbnail;
     }
 }

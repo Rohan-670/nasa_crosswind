@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Outpost.UI.HUD;
 
 namespace Outpost.UI.Core
 {
@@ -13,11 +14,22 @@ namespace Outpost.UI.Core
         public static event Action<UIState> OnUIStateChanged;
         public static event Action<bool> OnPauseToggled;
 
-        // Life Support / Resource Telemetry
+        // Life Support / Resource Telemetry (Computer 1 Integration)
+        public static event Action<OutpostResourceSnapshot> OnResourceSnapshotUpdated;
         public static event Action<float, float, float> OnOxygenUpdated;      // Current, Max, Rate
         public static event Action<float, float, float> OnPowerUpdated;       // Current, Max, Rate
         public static event Action<float, float, float> OnWaterUpdated;       // Current, Max, Rate
         public static event Action<float, bool> OnCarbonDioxideUpdated;       // PPM, ScrubberActive
+
+        // Phase 2 Resource Updates
+        public static event Action<float, float, string> OnOxygenDataChanged;
+        public static event Action<float, float, string> OnWaterDataChanged;
+        public static event Action<float, float, string> OnFoodDataChanged;
+        public static event Action<float, float, string> OnElectricityDataChanged;
+        public static event Action<float, float, string> OnBatteryDataChanged;
+        public static event Action<float, string> OnCrewHealthDataChanged;
+        public static event Action<float, string> OnEquipmentConditionDataChanged;
+        public static event Action<int, string> OnSparePartsDataChanged;
 
         // Mission & Objectives
         public static event Action<string, string> OnObjectiveUpdated;        // ID, Description
@@ -35,10 +47,22 @@ namespace Outpost.UI.Core
         public static void PublishUIStateChanged(UIState newState) => OnUIStateChanged?.Invoke(newState);
         public static void PublishPauseToggled(bool isPaused) => OnPauseToggled?.Invoke(isPaused);
 
+        public static void PublishResourceSnapshot(OutpostResourceSnapshot snapshot) =>
+            OnResourceSnapshotUpdated?.Invoke(snapshot);
+
         public static void PublishOxygen(float cur, float max, float rate) => OnOxygenUpdated?.Invoke(cur, max, rate);
         public static void PublishPower(float cur, float max, float rate) => OnPowerUpdated?.Invoke(cur, max, rate);
         public static void PublishWater(float cur, float max, float rate) => OnWaterUpdated?.Invoke(cur, max, rate);
         public static void PublishCarbonDioxide(float ppm, bool active) => OnCarbonDioxideUpdated?.Invoke(ppm, active);
+
+        public static void PublishOxygenData(float cur, float max, string exp = "") => OnOxygenDataChanged?.Invoke(cur, max, exp);
+        public static void PublishWaterData(float cur, float max, string exp = "") => OnWaterDataChanged?.Invoke(cur, max, exp);
+        public static void PublishFoodData(float cur, float max, string exp = "") => OnFoodDataChanged?.Invoke(cur, max, exp);
+        public static void PublishElectricityData(float curKw, float maxKw, string exp = "") => OnElectricityDataChanged?.Invoke(curKw, maxKw, exp);
+        public static void PublishBatteryData(float curKwh, float maxKwh, string exp = "") => OnBatteryDataChanged?.Invoke(curKwh, maxKwh, exp);
+        public static void PublishCrewHealthData(float pct, string exp = "") => OnCrewHealthDataChanged?.Invoke(pct, exp);
+        public static void PublishEquipmentConditionData(float pct, string exp = "") => OnEquipmentConditionDataChanged?.Invoke(pct, exp);
+        public static void PublishSparePartsData(int count, string exp = "") => OnSparePartsDataChanged?.Invoke(count, exp);
 
         public static void PublishObjective(string id, string desc) => OnObjectiveUpdated?.Invoke(id, desc);
         public static void PublishWaypoint(string id, Vector3 pos, string label) => OnWaypointPinned?.Invoke(id, pos, label);
