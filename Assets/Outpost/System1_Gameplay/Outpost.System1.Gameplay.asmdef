@@ -1,0 +1,17 @@
+{
+    "name": "Outpost.System1.Gameplay",
+    "rootNamespace": "Outpost.System1.Gameplay",
+    "references": [
+        "Outpost.Core",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

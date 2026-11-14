@@ -1,0 +1,18 @@
+{
+    "name": "Outpost.System3.Interface",
+    "rootNamespace": "Outpost.System3.Interface",
+    "references": [
+        "Outpost.Core",
+        "Unity.InputSystem",
+        "UnityEngine.UI"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
