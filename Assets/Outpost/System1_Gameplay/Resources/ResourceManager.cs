@@ -89,6 +89,11 @@ namespace Outpost.System1.Gameplay.Resources
 
         public void EnsureInitialized()
         {
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+
             if (config == null)
             {
                 config = ResourceSystemConfig.CreateDefault();

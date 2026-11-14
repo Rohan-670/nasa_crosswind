@@ -17,6 +17,9 @@ namespace Outpost.Core.Events
         public static event Action<ResourceStateData> DetailedTelemetryUpdated;
         public static event Action<ResourceCategory, ResourceAlertLevel, string> ResourceAlertTriggered;
         public static event Action<bool, string> EmergencyTriggered; // active, reason
+        public static event Action<EmergencyModel> EmergencyStateChanged;
+        public static event Action<RepairOutcomeData> RepairOutcomeEvaluated;
+        public static event Action<string, bool> FiltrationFeedbackPrompted;
 
         // Equipment Events
         public static event Action<IStationEquipment> EquipmentStateChanged;
@@ -50,6 +53,9 @@ namespace Outpost.Core.Events
         public static void RaiseDetailedTelemetryUpdated(ResourceStateData state) => DetailedTelemetryUpdated?.Invoke(state);
         public static void RaiseResourceAlertTriggered(ResourceCategory cat, ResourceAlertLevel lvl, string msg) => ResourceAlertTriggered?.Invoke(cat, lvl, msg);
         public static void RaiseEmergencyTriggered(bool active, string reason) => EmergencyTriggered?.Invoke(active, reason);
+        public static void RaiseEmergencyStateChanged(EmergencyModel model) => EmergencyStateChanged?.Invoke(model);
+        public static void RaiseRepairOutcomeEvaluated(RepairOutcomeData outcome) => RepairOutcomeEvaluated?.Invoke(outcome);
+        public static void RaiseFiltrationFeedbackPrompted(string msg, bool success) => FiltrationFeedbackPrompted?.Invoke(msg, success);
 
         public static void RaiseEquipmentStateChanged(IStationEquipment equipment) => EquipmentStateChanged?.Invoke(equipment);
 
