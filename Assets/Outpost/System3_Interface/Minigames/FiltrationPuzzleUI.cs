@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Outpost.Core.Data;
 using Outpost.Core.Events;
-using Outpost.System1.Gameplay.Emergency;
 
 namespace Outpost.System3.Interface.Minigames
 {

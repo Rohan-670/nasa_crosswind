@@ -89,14 +89,14 @@ namespace Outpost.System1.Gameplay.Core
 
         private void LocateSubsystems()
         {
-            if (playerController == null) playerController = FindFirstObjectByType<Player.PlayerController>();
-            if (cameraController == null) cameraController = FindFirstObjectByType<Player.CameraController>();
-            if (interactionManager == null) interactionManager = FindFirstObjectByType<Interactions.InteractionManager>();
-            if (resourceManager == null) resourceManager = FindFirstObjectByType<Resources.ResourceManager>();
-            if (equipmentManager == null) equipmentManager = FindFirstObjectByType<Equipment.EquipmentManager>();
-            if (emergencyManager == null) emergencyManager = FindFirstObjectByType<Emergency.EmergencyManager>();
-            if (missionManager == null) missionManager = FindFirstObjectByType<Mission.MissionManager>();
-            if (saveManager == null) saveManager = FindFirstObjectByType<Persistence.SaveManager>();
+            if (playerController == null) playerController = FindAnyObjectByType<Player.PlayerController>();
+            if (cameraController == null) cameraController = FindAnyObjectByType<Player.CameraController>();
+            if (interactionManager == null) interactionManager = FindAnyObjectByType<Interactions.InteractionManager>();
+            if (resourceManager == null) resourceManager = FindAnyObjectByType<Resources.ResourceManager>();
+            if (equipmentManager == null) equipmentManager = FindAnyObjectByType<Equipment.EquipmentManager>();
+            if (emergencyManager == null) emergencyManager = FindAnyObjectByType<Emergency.EmergencyManager>();
+            if (missionManager == null) missionManager = FindAnyObjectByType<Mission.MissionManager>();
+            if (saveManager == null) saveManager = FindAnyObjectByType<Persistence.SaveManager>();
         }
 
         public void SetState(GameplayState newState)

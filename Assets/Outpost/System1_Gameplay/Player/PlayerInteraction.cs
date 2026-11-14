@@ -16,7 +16,7 @@ namespace Outpost.System1.Gameplay.Player
             if (interactionManager == null)
             {
                 interactionManager = GetComponent<InteractionManager>();
-                if (interactionManager == null) interactionManager = FindFirstObjectByType<InteractionManager>();
+                if (interactionManager == null) interactionManager = FindAnyObjectByType<InteractionManager>();
             }
         }
 

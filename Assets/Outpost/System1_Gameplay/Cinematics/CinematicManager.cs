@@ -28,7 +28,7 @@ namespace Outpost.System1.Gameplay.Cinematics
 
             if (cameraController == null)
             {
-                cameraController = FindFirstObjectByType<Player.CameraController>();
+                cameraController = FindAnyObjectByType<Player.CameraController>();
             }
         }
 

@@ -19,6 +19,7 @@ namespace Outpost.Core.Events
         public static event Action<StationLocationId> TargetWaypointSet;
         public static event Action<StationLocationId> LocationArrived;
         public static event Action<bool> GeoMapToggled; // isOpen
+        public static event Action<string> InteractionPromptChanged;
 
         // Dialogue & Presentation Events
         public static event Action<DialogueLine> DialogueLinePrompted;
@@ -44,6 +45,7 @@ namespace Outpost.Core.Events
         public static void RaiseTargetWaypointSet(StationLocationId id) => TargetWaypointSet?.Invoke(id);
         public static void RaiseLocationArrived(StationLocationId id) => LocationArrived?.Invoke(id);
         public static void RaiseGeoMapToggled(bool open) => GeoMapToggled?.Invoke(open);
+        public static void RaiseInteractionPromptChanged(string prompt) => InteractionPromptChanged?.Invoke(prompt);
 
         public static void RaiseDialogueLinePrompted(DialogueLine line) => DialogueLinePrompted?.Invoke(line);
         public static void RaiseDialogueCompleted() => DialogueCompleted?.Invoke();
