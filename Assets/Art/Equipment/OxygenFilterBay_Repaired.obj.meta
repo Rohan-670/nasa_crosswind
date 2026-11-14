@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: d2000000000000000000000000000006
+ModelImporter:
+  serializedVersion: 23000
+  internalIDToNameTable: []
+  externalObjects: {}
+  materials:
+    materialImportMode: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  meshes:
+    meshCompression: 0
+    isReadable: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    importNormals: 1
+    normalCalculationMode: 1
+    normalSmoothingSource: 0
+    importBlendShapes: 0
+    generateColliders: 0
+  importAnimation: 0
