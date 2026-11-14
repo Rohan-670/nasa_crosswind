@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d17d177157259c5a2e4ba5d23bfc8b9, type: 3}
+  m_Name: Mission1_Scene5_FiltrationChallenge
+  m_EditorClassIdentifier: 
+  ConversationId: Mission1_Scene5_FiltrationChallenge
+  MissionChapter: 'Chapter 5: The Filtration Challenge'
+  TriggerType: 1
+  IsGroupDiscussion: 1
+  IsCinematicConversation: 0
+  Lines:
+  - Speaker: 1
+    Expression: 3
+    DialogueText: "We need to work with the available spare components."
+    EducationalConceptNote: "Creative engineering in space: repurposing existing tools to solve emergencies."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 1
+    CrewReactions: []
+  - Speaker: 2
+    Expression: 3
+    DialogueText: "Let's inspect the filtration system and identify what is missing."
+    EducationalConceptNote: "The habitat slot is square, but the spare LiOH filter canister is round!"
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 1
+    CrewReactions: []
+  - Speaker: 0
+    Expression: 4
+    DialogueText: "We'll verify every step before activating the repair."
+    EducationalConceptNote: "NASA checklist discipline: measure twice, seal once."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 2
+    CrewReactions: []
+  - Speaker: 4
+    Expression: 0
+    DialogueText: "Diagnostic assistance is available."
+    EducationalConceptNote: "Historical archive: Apollo 13 LiOH adapter engineering schematic loaded."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 5
+    CrewReactions: []
+  Choices:
+  NextConversationId: 'Mission1_Scene6_FinalDecision'
+  OnConversationCompleted:
+    m_PersistentCalls:
+      m_Calls: []

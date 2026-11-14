@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92f9b277fe195929a438f0d53ad59bac, type: 3}
+  m_Name: Map_MainHabitat
+  m_EditorClassIdentifier: 
+  LocationId: LOC_HABITAT
+  LocationName: Main Habitat
+  FacilityType: 0
+  GridSector: E-5
+  WorldPosition: {x: 0.0, y: 0.0, z: 0.0}
+  FacilityDescription: "Central pressurized habitat, airlock, and environmental life-support core."
+  EducationalScienceFact: "Did you know? Moon habitats need thick shielding or regolith burial to protect astronauts from space radiation and temperature swings from -130C to +120C!"
+  IsDiscoveredByDefault: 1
+  LocationThumbnail: {fileID: 0}

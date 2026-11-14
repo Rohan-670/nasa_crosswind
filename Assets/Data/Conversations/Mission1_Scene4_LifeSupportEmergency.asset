@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d17d177157259c5a2e4ba5d23bfc8b9, type: 3}
+  m_Name: Mission1_Scene4_LifeSupportEmergency
+  m_EditorClassIdentifier: 
+  ConversationId: Mission1_Scene4_LifeSupportEmergency
+  MissionChapter: 'Chapter 4: Life-Support Emergency'
+  TriggerType: 3
+  IsGroupDiscussion: 1
+  IsCinematicConversation: 0
+  Lines:
+  - Speaker: 1
+    Expression: 2
+    DialogueText: "The electrical disturbance has interrupted the oxygen generation system."
+    EducationalConceptNote: "Electrolysis requires a steady DC current to separate water into oxygen."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 1
+    CrewReactions: []
+  - Speaker: 3
+    Expression: 2
+    DialogueText: "We need to monitor the crew's life-support status."
+    EducationalConceptNote: "Humans exhale carbon dioxide; in sealed quarters, scrubbers are vital."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 1
+    CrewReactions: []
+  - Speaker: 2
+    Expression: 2
+    DialogueText: "Carbon dioxide removal is also affected."
+    EducationalConceptNote: "Rising CO2 causes headaches, confusion, and oxygen starvation if untreated."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 1
+    CrewReactions: []
+  - Speaker: 0
+    Expression: 4
+    DialogueText: "ORION, identify the safest recovery options."
+    EducationalConceptNote: "AI provides rapid analysis of available consumables and spares."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 2
+    CrewReactions: []
+  Choices:
+  NextConversationId: 'Mission1_Scene5_FiltrationChallenge'
+  OnConversationCompleted:
+    m_PersistentCalls:
+      m_Calls: []

@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d17d177157259c5a2e4ba5d23bfc8b9, type: 3}
+  m_Name: Mission1_Scene3_MicrometeoroidIncident
+  m_EditorClassIdentifier: 
+  ConversationId: Mission1_Scene3_MicrometeoroidIncident
+  MissionChapter: 'Chapter 3: The Micrometeoroid Incident'
+  TriggerType: 3
+  IsGroupDiscussion: 1
+  IsCinematicConversation: 0
+  Lines:
+  - Speaker: 4
+    Expression: 5
+    DialogueText: "Warning! External equipment impact detected."
+    EducationalConceptNote: "Micrometeoroids travel over 20 kilometers per second in the lunar vacuum."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 5
+    CrewReactions: []
+  - Speaker: 2
+    Expression: 5
+    DialogueText: "That impact appears to have damaged the external assembly."
+    EducationalConceptNote: "High-velocity impacts cause kinetic shearing on metal conduit shielding."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 1
+    CrewReactions: []
+  - Speaker: 1
+    Expression: 2
+    DialogueText: "I'm checking the power distribution now."
+    EducationalConceptNote: "Power grids use automated breaker switches to isolate damaged lines."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 1
+    CrewReactions: []
+  - Speaker: 0
+    Expression: 3
+    DialogueText: "Everyone, report your status."
+    EducationalConceptNote: "Standard emergency protocol: immediate headcount and integrity confirmation."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 2
+    CrewReactions: []
+  Choices:
+  NextConversationId: 'Mission1_Scene4_LifeSupportEmergency'
+  OnConversationCompleted:
+    m_PersistentCalls:
+      m_Calls: []

@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d17d177157259c5a2e4ba5d23bfc8b9, type: 3}
+  m_Name: Mission1_Ch2_GeologyExploration
+  m_EditorClassIdentifier: 
+  ConversationId: Mission1_Ch2_GeologyExploration
+  MissionChapter: 'Chapter 2: Outpost Establishment'
+  TriggerType: 1
+  IsGroupDiscussion: 1
+  IsCinematicConversation: 0
+  Lines:
+  - Speaker: 2
+    Expression: 1
+    DialogueText: "Spectrometer scans of Shackleton rim confirm rich deposits of titanium-bearing ilmenite and silicon regolith."
+    EducationalConceptNote: "Ilmenite (FeTiO3) contains both oxygen and titanium for building materials."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 1
+    CrewReactions: []
+  - Speaker: 1
+    Expression: 0
+    DialogueText: "Those minerals can be sintered with concentrated solar heat into durable landing pads and bricks."
+    EducationalConceptNote: "In-Situ Resource Utilization (ISRU) reduces launch weight from Earth."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 1
+    CrewReactions: []
+  - Speaker: 2
+    Expression: 0
+    DialogueText: "Down inside the permanently shadowed crater floor, volatile water ice is preserved at -230 degrees Celsius."
+    EducationalConceptNote: "Cold traps hold water deposits that have survived undisturbed for billions of years."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 1
+    CrewReactions: []
+  - Speaker: 0
+    Expression: 0
+    DialogueText: "Every regolith sample brings us closer to understanding lunar evolution and fueling future deep space missions."
+    EducationalConceptNote: "Splitting lunar water produces hydrogen and liquid oxygen rocket propellant."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 1
+    CrewReactions: []
+  - Speaker: 4
+    Expression: 0
+    DialogueText: "Spectral data cataloged and transmitted to NASA Earth science center."
+    EducationalConceptNote: "ORION maintains high-bandwidth laser communications with Earth."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 5
+    CrewReactions: []
+  Choices: []
+  NextConversationId: ''
+  OnConversationCompleted:
+    m_PersistentCalls:
+      m_Calls: []

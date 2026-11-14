@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d17d177157259c5a2e4ba5d23bfc8b9, type: 3}
+  m_Name: Mission1_Ch2_HabitatInspection
+  m_EditorClassIdentifier: 
+  ConversationId: Mission1_Ch2_HabitatInspection
+  MissionChapter: 'Chapter 2: Outpost Establishment'
+  TriggerType: 1
+  IsGroupDiscussion: 1
+  IsCinematicConversation: 0
+  Lines:
+  - Speaker: 0
+    Expression: 0
+    DialogueText: "Marcus, verify the airlock pressure cycling and inner hull micrometeoroid shield."
+    EducationalConceptNote: "Airlocks maintain 101.3 kPa pressure and trap abrasive lunar dust."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 1
+    CrewReactions: []
+  - Speaker: 1
+    Expression: 1
+    DialogueText: "Pressure seals holding steady at 101.3 kilopascals. Dual airlock pumps operational."
+    EducationalConceptNote: "Atmospheric pressure inside mimics Earth sea-level conditions."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 1
+    CrewReactions: []
+  - Speaker: 2
+    Expression: 0
+    DialogueText: "Atmospheric sensors confirm 78% Nitrogen, 21% Oxygen, and trace carbon dioxide."
+    EducationalConceptNote: "Oxygen levels must stay near 21% to avoid hypoxia or fire hazards."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 1
+    CrewReactions: []
+  - Speaker: 3
+    Expression: 0
+    DialogueText: "Crew physiological readouts are nominal. No signs of decompression stress."
+    EducationalConceptNote: "Rapid pressure changes cause decompression sickness; airlocks prevent this."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 1
+    CrewReactions: []
+  - Speaker: 4
+    Expression: 0
+    DialogueText: "Habitat environmental control confirmed. Safe for unsuited operations inside."
+    EducationalConceptNote: "ORION continuously monitors micro-leaks and structural vibrations."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 5
+    CrewReactions: []
+  Choices: []
+  NextConversationId: ''
+  OnConversationCompleted:
+    m_PersistentCalls:
+      m_Calls: []
