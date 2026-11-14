@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Outpost.Core.Data;
+using Outpost.Core.Interfaces;
 using Outpost.Core.Events;
 
 namespace Outpost.System1.Gameplay.Equipment
@@ -35,22 +37,42 @@ namespace Outpost.System1.Gameplay.Equipment
         }
     }
 
+    /// <summary>
+    /// Central manager for both station equipment prefabs (IStationEquipment registry)
+    /// and portable astronaut tools/spare parts inventory.
+    /// </summary>
     public class EquipmentManager : MonoBehaviour
     {
         [Header("Equipment Inventory")]
         [SerializeField] private List<EquipmentItem> inventory = new List<EquipmentItem>();
 
+        [Header("Registered Station Equipment")]
+        [SerializeField] private List<IStationEquipment> registeredEquipment = new List<IStationEquipment>();
+
         public event Action<EquipmentType> OnEquipmentAcquired;
         public event Action<EquipmentType> OnEquipmentConsumed;
+        public event Action<IStationEquipment> OnEquipmentRegistered;
+        public event Action<IStationEquipment> OnEquipmentUnregistered;
+        public event Action<IStationEquipment> OnEquipmentStateUpdated;
 
         public static EquipmentManager Instance { get; private set; }
 
         private void Awake()
         {
             if (Instance == null) Instance = this;
-            else Destroy(gameObject);
+            else
+            {
+                if (Application.isPlaying) Destroy(gameObject);
+                else DestroyImmediate(gameObject);
+                return;
+            }
 
             InitializeDefaultEquipment();
+        }
+
+        private void OnDestroy()
+        {
+            if (Instance == this) Instance = null;
         }
 
         private void InitializeDefaultEquipment()
@@ -64,6 +86,8 @@ namespace Outpost.System1.Gameplay.Equipment
             inventory.Add(new EquipmentItem(EquipmentType.RoverRemoteTerminal, "Rover Wireless Terminal", "Remote interface to control the rover's robotic manipulator arm."));
             inventory.Add(new EquipmentItem(EquipmentType.GeologicalCoreDrill, "Cryogenic Core Drill", "Aisha's sampling drill for extracting prehistoric ice volatiles."));
         }
+
+        #region Portable Inventory & Spares
 
         public bool HasEquipment(EquipmentType type)
         {
@@ -101,14 +125,117 @@ namespace Outpost.System1.Gameplay.Equipment
             }
         }
 
-        public EquipmentItem GetItem(EquipmentType type)
+        public EquipmentItem GetItem(EquipmentType type) => inventory.Find(i => i.Type == type);
+        public IReadOnlyList<EquipmentItem> GetAllItems() => inventory;
+
+        #endregion
+
+        #region Station Equipment Registry
+
+        public void RegisterEquipment(IStationEquipment equipment)
         {
-            return inventory.Find(i => i.Type == type);
+            if (equipment == null || registeredEquipment.Contains(equipment)) return;
+
+            registeredEquipment.Add(equipment);
+            OnEquipmentRegistered?.Invoke(equipment);
+            OutpostEventChannel.RaiseEquipmentStateChanged(equipment);
         }
 
-        public IReadOnlyList<EquipmentItem> GetAllItems()
+        public void UnregisterEquipment(IStationEquipment equipment)
         {
-            return inventory;
+            if (equipment == null || !registeredEquipment.Contains(equipment)) return;
+
+            registeredEquipment.Remove(equipment);
+            OnEquipmentUnregistered?.Invoke(equipment);
         }
+
+        public void HandleEquipmentStateChanged(IStationEquipment equipment)
+        {
+            OnEquipmentStateUpdated?.Invoke(equipment);
+        }
+
+        public float GetTotalActivePowerDrawKw()
+        {
+            float total = 0f;
+            for (int i = 0; i < registeredEquipment.Count; i++)
+            {
+                var eq = registeredEquipment[i];
+                if (eq != null && eq.IsOperational && eq.IsPowered)
+                {
+                    total += eq.PowerDrawKw;
+                }
+            }
+            return total;
+        }
+
+        public float GetAverageEquipmentCondition()
+        {
+            if (registeredEquipment.Count == 0) return 100f;
+
+            float sum = 0f;
+            int count = 0;
+            for (int i = 0; i < registeredEquipment.Count; i++)
+            {
+                if (registeredEquipment[i] != null)
+                {
+                    sum += registeredEquipment[i].ConditionPercent;
+                    count++;
+                }
+            }
+            return count > 0 ? (sum / count) : 100f;
+        }
+
+        public IStationEquipment GetEquipmentById(string id)
+        {
+            return registeredEquipment.Find(e => e != null && e.EquipmentId == id);
+        }
+
+        public List<IStationEquipment> GetEquipmentByLocation(StationLocationId loc)
+        {
+            List<IStationEquipment> list = new List<IStationEquipment>();
+            for (int i = 0; i < registeredEquipment.Count; i++)
+            {
+                if (registeredEquipment[i] != null && registeredEquipment[i].LocationId == loc)
+                {
+                    list.Add(registeredEquipment[i]);
+                }
+            }
+            return list;
+        }
+
+        public void ApplyLoadShedding(PowerPriority highestShedPriority)
+        {
+            // Priority ordering: 0 is highest (CriticalLifeSupport), 4 is lowest (ScienceAndAuxiliary).
+            // When load shedding, equipment with priority >= highestShedPriority are turned off.
+            for (int i = 0; i < registeredEquipment.Count; i++)
+            {
+                var eq = registeredEquipment[i];
+                if (eq == null) continue;
+
+                if (eq.Priority >= highestShedPriority)
+                {
+                    eq.SetPoweredState(false);
+                }
+                else
+                {
+                    eq.SetPoweredState(true);
+                }
+            }
+        }
+
+        public void RestoreAllEquipmentPower()
+        {
+            for (int i = 0; i < registeredEquipment.Count; i++)
+            {
+                if (registeredEquipment[i] != null)
+                {
+                    registeredEquipment[i].SetPoweredState(true);
+                }
+            }
+        }
+
+        public IReadOnlyList<IStationEquipment> GetAllEquipment() => registeredEquipment;
+
+        #endregion
     }
 }

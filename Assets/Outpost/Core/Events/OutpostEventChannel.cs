@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using Outpost.Core.Data;
+using Outpost.Core.Interfaces;
 
 namespace Outpost.Core.Events
 {
@@ -13,7 +14,12 @@ namespace Outpost.Core.Events
 
         // Resource / Life-support Events
         public static event Action<float, float, float, float> TelemetryUpdated; // o2, co2, powerKW, battery%
+        public static event Action<ResourceStateData> DetailedTelemetryUpdated;
+        public static event Action<ResourceCategory, ResourceAlertLevel, string> ResourceAlertTriggered;
         public static event Action<bool, string> EmergencyTriggered; // active, reason
+
+        // Equipment Events
+        public static event Action<IStationEquipment> EquipmentStateChanged;
 
         // Navigation & Geo Map Events
         public static event Action<StationLocationId> TargetWaypointSet;
@@ -23,6 +29,7 @@ namespace Outpost.Core.Events
 
         // Dialogue & Presentation Events
         public static event Action<DialogueLine> DialogueLinePrompted;
+        public static event Action<ConversationSequence> ConversationSequencePrompted;
         public static event Action DialogueCompleted;
         public static event Action<EducationalFact> EducationalFactPrompted;
 
@@ -40,7 +47,11 @@ namespace Outpost.Core.Events
         public static void RaiseRepairChoiceMade(RepairChoice choice) => RepairChoiceMade?.Invoke(choice);
 
         public static void RaiseTelemetryUpdated(float o2, float co2, float pwr, float bat) => TelemetryUpdated?.Invoke(o2, co2, pwr, bat);
+        public static void RaiseDetailedTelemetryUpdated(ResourceStateData state) => DetailedTelemetryUpdated?.Invoke(state);
+        public static void RaiseResourceAlertTriggered(ResourceCategory cat, ResourceAlertLevel lvl, string msg) => ResourceAlertTriggered?.Invoke(cat, lvl, msg);
         public static void RaiseEmergencyTriggered(bool active, string reason) => EmergencyTriggered?.Invoke(active, reason);
+
+        public static void RaiseEquipmentStateChanged(IStationEquipment equipment) => EquipmentStateChanged?.Invoke(equipment);
 
         public static void RaiseTargetWaypointSet(StationLocationId id) => TargetWaypointSet?.Invoke(id);
         public static void RaiseLocationArrived(StationLocationId id) => LocationArrived?.Invoke(id);
@@ -48,6 +59,7 @@ namespace Outpost.Core.Events
         public static void RaiseInteractionPromptChanged(string prompt) => InteractionPromptChanged?.Invoke(prompt);
 
         public static void RaiseDialogueLinePrompted(DialogueLine line) => DialogueLinePrompted?.Invoke(line);
+        public static void RaiseConversationSequencePrompted(ConversationSequence seq) => ConversationSequencePrompted?.Invoke(seq);
         public static void RaiseDialogueCompleted() => DialogueCompleted?.Invoke();
         public static void RaiseEducationalFactPrompted(EducationalFact fact) => EducationalFactPrompted?.Invoke(fact);
 

@@ -32,6 +32,27 @@ namespace Outpost.System1.Gameplay.LifeSupport
             else Destroy(gameObject);
         }
 
+        private void OnEnable()
+        {
+            if (ResourceManager.Instance != null)
+            {
+                ResourceManager.Instance.OnResourceLevelsChanged += HandleResourceLevelsChanged;
+                ResourceManager.Instance.OnEmergencyStateChanged += HandleEmergencyStateChanged;
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (ResourceManager.Instance != null)
+            {
+                ResourceManager.Instance.OnResourceLevelsChanged -= HandleResourceLevelsChanged;
+                ResourceManager.Instance.OnEmergencyStateChanged -= HandleEmergencyStateChanged;
+            }
+        }
+
+        private void HandleResourceLevelsChanged(float o2, float co2) => OnResourceLevelsChanged?.Invoke(o2, co2);
+        private void HandleEmergencyStateChanged(bool active, string msg) => OnEmergencyStateChanged?.Invoke(active, msg);
+
         public void SetSubsystemActive(string subsystemName, bool active) => ResourceManager.Instance?.SetSubsystemActive(subsystemName, active);
         public void TriggerMicrometeoroidDamage() => ResourceManager.Instance?.TriggerMicrometeoroidDamage();
         public void RepairFiltrationCanister() => ResourceManager.Instance?.RepairFiltrationCanister();

@@ -1,0 +1,19 @@
+{
+    "name": "Outpost.System1.Gameplay.Editor",
+    "rootNamespace": "Outpost.System1.Gameplay.Editor",
+    "references": [
+        "Outpost.Core",
+        "Outpost.System1.Gameplay"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

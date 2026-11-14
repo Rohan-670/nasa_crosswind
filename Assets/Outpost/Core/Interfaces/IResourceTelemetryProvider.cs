@@ -1,4 +1,5 @@
 using System;
+using Outpost.Core.Data;
 
 namespace Outpost.Core.Interfaces
 {
@@ -18,7 +19,11 @@ namespace Outpost.Core.Interfaces
         bool IsEmergencyActive { get; }
         string EmergencyAlertMessage { get; }
 
+        ResourceStateData CurrentState { get; }
+
         event Action<float, float, float, float> OnTelemetryUpdated; // o2, co2, pwr, battery
         event Action<bool, string> OnEmergencyStateChanged;
+        event Action<ResourceStateData> OnDetailedTelemetryUpdated;
+        event Action<ResourceCategory, ResourceAlertLevel, string> OnResourceAlert;
     }
 }

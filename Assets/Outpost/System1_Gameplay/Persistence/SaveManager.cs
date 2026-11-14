@@ -16,6 +16,9 @@ namespace Outpost.System1.Gameplay.Persistence
         public float OxygenLevel;
         public float BatteryLevel;
         public string SaveTimestamp;
+
+        // Comprehensive Resource State Snapshot
+        public ResourceStateData ResourceState;
     }
 
     public class SaveManager : MonoBehaviour
@@ -47,6 +50,10 @@ namespace Outpost.System1.Gameplay.Persistence
 
         public void SaveGameState(MissionChapterId chapter, RepairChoice choice, Vector3 playerPos)
         {
+            ResourceStateData rState = Resources.ResourceManager.Instance != null
+                ? Resources.ResourceManager.Instance.ExportState()
+                : new ResourceStateData();
+
             OutpostSaveModel model = new OutpostSaveModel
             {
                 ChapterId = (int)chapter,
@@ -54,9 +61,10 @@ namespace Outpost.System1.Gameplay.Persistence
                 PlayerPosX = playerPos.x,
                 PlayerPosY = playerPos.y,
                 PlayerPosZ = playerPos.z,
-                OxygenLevel = Resources.ResourceManager.Instance != null ? Resources.ResourceManager.Instance.OxygenPercent : 100f,
-                BatteryLevel = Resources.ResourceManager.Instance != null ? Resources.ResourceManager.Instance.BatteryChargePercent : 100f,
-                SaveTimestamp = DateTime.UtcNow.ToString("o")
+                OxygenLevel = rState.OxygenPercent,
+                BatteryLevel = rState.BatteryPercent,
+                SaveTimestamp = DateTime.UtcNow.ToString("o"),
+                ResourceState = rState
             };
 
             string json = JsonUtility.ToJson(model);
@@ -71,10 +79,18 @@ namespace Outpost.System1.Gameplay.Persistence
             try
             {
                 string json = PlayerPrefs.GetString(SaveKey);
-                return JsonUtility.FromJson<OutpostSaveModel>(json);
+                OutpostSaveModel model = JsonUtility.FromJson<OutpostSaveModel>(json);
+
+                if (model != null && model.ResourceState != null && Resources.ResourceManager.Instance != null)
+                {
+                    Resources.ResourceManager.Instance.ImportState(model.ResourceState);
+                }
+
+                return model;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Debug.LogWarning($"[SaveManager] Failed to load game state: {ex.Message}");
                 return null;
             }
         }
