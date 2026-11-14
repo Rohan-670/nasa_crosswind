@@ -49,11 +49,13 @@ namespace Outpost.System3.Interface.Dialogue
         private void OnEnable()
         {
             OutpostEventChannel.DialogueLinePrompted += HandleDialogueLinePrompted;
+            OutpostEventChannel.ConversationSequencePrompted += PlayConversation;
         }
 
         private void OnDisable()
         {
             OutpostEventChannel.DialogueLinePrompted -= HandleDialogueLinePrompted;
+            OutpostEventChannel.ConversationSequencePrompted -= PlayConversation;
         }
 
         private void HandleDialogueLinePrompted(DialogueLine line)

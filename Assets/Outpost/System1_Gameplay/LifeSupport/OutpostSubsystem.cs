@@ -2,23 +2,36 @@ using UnityEngine;
 using Outpost.Core.Data;
 using Outpost.Core.Interfaces;
 using Outpost.Core.Events;
+using Outpost.System1.Gameplay.Interactions;
 
 namespace Outpost.System1.Gameplay.LifeSupport
 {
-    public class OutpostSubsystem : MonoBehaviour, IInteractable
+    public class OutpostSubsystem : InteractableBase
     {
         [SerializeField] private StationLocationId locationId;
         [SerializeField] private string subsystemName = "Outpost System";
-        [SerializeField] private string actionPrompt = "Press [E] to Activate / Inspect";
         [SerializeField] private bool isOperational = true;
 
         public StationLocationId LocationId => locationId;
         public string SubsystemName => subsystemName;
-        public string PromptText => $"{subsystemName}: {actionPrompt}";
-        public Vector3 InteractionPosition => transform.position;
-        public bool CanInteract => true;
+        public bool IsOperational => isOperational;
 
-        public void Interact()
+        public override string PromptText => $"{subsystemName}: Press [E] to Inspect";
+        public string ContextDescription => $"{subsystemName} Status: {(isOperational ? "Operational" : "Offline")}";
+
+        protected override void Awake()
+        {
+            base.Awake();
+            objectName = subsystemName;
+            promptAction = "Inspect";
+        }
+
+        public void SetOperational(bool operational)
+        {
+            isOperational = operational;
+        }
+
+        protected override void ExecuteInteraction(GameObject interactor)
         {
             OutpostEventChannel.RaiseLocationArrived(locationId);
             OutpostEventChannel.RaisePlaySfx("terminal_beep");

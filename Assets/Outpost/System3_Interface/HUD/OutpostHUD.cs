@@ -27,18 +27,10 @@ namespace Outpost.System3.Interface.HUD
         [SerializeField] private GameObject interactionTooltip;
         [SerializeField] private Text interactionPromptText;
 
-        [Header("Player Reference")]
-        [SerializeField] private Gameplay.Player.PlayerInteraction playerInteraction;
-
         private void Start()
         {
             if (emergencyBanner != null) emergencyBanner.SetActive(false);
             if (interactionTooltip != null) interactionTooltip.SetActive(false);
-
-            if (playerInteraction == null)
-            {
-                playerInteraction = FindFirstObjectByType<Gameplay.Player.PlayerInteraction>();
-            }
         }
 
         private void OnEnable()
@@ -47,6 +39,7 @@ namespace Outpost.System3.Interface.HUD
             OutpostEventChannel.ObjectiveUpdated += HandleObjectiveUpdated;
             OutpostEventChannel.TelemetryUpdated += HandleTelemetryUpdated;
             OutpostEventChannel.EmergencyTriggered += HandleEmergencyTriggered;
+            OutpostEventChannel.InteractionPromptChanged += HandleInteractionPromptChanged;
         }
 
         private void OnDisable()
@@ -55,18 +48,13 @@ namespace Outpost.System3.Interface.HUD
             OutpostEventChannel.ObjectiveUpdated -= HandleObjectiveUpdated;
             OutpostEventChannel.TelemetryUpdated -= HandleTelemetryUpdated;
             OutpostEventChannel.EmergencyTriggered -= HandleEmergencyTriggered;
+            OutpostEventChannel.InteractionPromptChanged -= HandleInteractionPromptChanged;
         }
 
-        private void Update()
+        private void HandleInteractionPromptChanged(string prompt)
         {
-            UpdateInteractionTooltip();
-        }
+            if (interactionTooltip == null) return;
 
-        private void UpdateInteractionTooltip()
-        {
-            if (playerInteraction == null || interactionTooltip == null) return;
-
-            string prompt = playerInteraction.GetCurrentPrompt();
             if (!string.IsNullOrEmpty(prompt))
             {
                 interactionTooltip.SetActive(true);
