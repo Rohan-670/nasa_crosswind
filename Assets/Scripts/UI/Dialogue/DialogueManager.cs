@@ -1,0 +1,196 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using Outpost.UI.Core;
+
+namespace Outpost.UI.Dialogue
+{
+    /// <summary>
+    /// Master dialogue orchestrator for System 3.
+    /// Manages line transitions, choices, audio playback, and completion events.
+    /// </summary>
+    public class DialogueManager : UIView, IDialogueManager
+    {
+        [Header("Components")]
+        [SerializeField] private CharacterDialoguePresentation _characterPresentation;
+        [SerializeField] private SubtitleSystem _subtitleSystem;
+        [SerializeField] private ConversationSequenceManager _sequenceManager;
+
+        [Header("Choices UI")]
+        [SerializeField] private GameObject _choicesContainer;
+        [SerializeField] private Button[] _choiceButtons;
+        [SerializeField] private TextMeshProUGUI[] _choiceTexts;
+
+        [Header("Next Indicator")]
+        [SerializeField] private GameObject _continueIndicator;
+
+        private ConversationData _currentConversation;
+        private int _currentLineIndex = -1;
+        private Action _onConversationCompleteCallback;
+        private bool _isWaitingForInput = false;
+
+        public bool IsDialogueActive => _currentConversation != null;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            if (_choicesContainer != null) _choicesContainer.SetActive(false);
+            if (_continueIndicator != null) _continueIndicator.SetActive(false);
+        }
+
+        private void Update()
+        {
+            if (!IsDialogueActive) return;
+
+            // Advance dialogue on Space or Left Mouse Click if not waiting for a branching choice
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
+            {
+                if (_subtitleSystem != null && _subtitleSystem.IsTyping)
+                {
+                    _subtitleSystem.FastForward();
+                }
+                else if (_isWaitingForInput)
+                {
+                    AdvanceDialogue();
+                }
+            }
+        }
+
+        public void StartConversation(ConversationData conversation, Action onComplete = null)
+        {
+            if (conversation == null || conversation.Lines.Count == 0) return;
+
+            _currentConversation = conversation;
+            _currentLineIndex = -1;
+            _onConversationCompleteCallback = onComplete;
+
+            Show();
+            UIEventBus.PublishUIStateChanged(UIState.Dialogue);
+            AdvanceDialogue();
+        }
+
+        public void StartConversationById(string conversationId, Action onComplete = null)
+        {
+            if (_sequenceManager != null)
+            {
+                var conv = _sequenceManager.GetConversation(conversationId);
+                if (conv != null)
+                {
+                    StartConversation(conv, onComplete);
+                    return;
+                }
+            }
+            Debug.LogWarning($"[DialogueManager] Conversation ID '{conversationId}' not found.");
+        }
+
+        public void AdvanceDialogue()
+        {
+            _isWaitingForInput = false;
+            if (_continueIndicator != null) _continueIndicator.SetActive(false);
+
+            _currentLineIndex++;
+
+            if (_currentLineIndex < _currentConversation.Lines.Count)
+            {
+                var line = _currentConversation.Lines[_currentLineIndex];
+
+                // Present speaker portrait and color badge
+                _characterPresentation?.DisplaySpeaker(line.Speaker, line.Expression, line.EducationalConceptNote);
+
+                // Play audio voice clip if available
+                if (line.VoiceClip != null)
+                {
+                    // Play through audio manager or local source
+                }
+
+                // Render typewriter text in subtitles
+                _subtitleSystem?.DisplayLine(line.DialogueText, () =>
+                {
+                    _isWaitingForInput = line.RequirePlayerClickToAdvance;
+                    if (_continueIndicator != null) _continueIndicator.SetActive(_isWaitingForInput);
+                });
+            }
+            else
+            {
+                // Reached end of line list. Check if branching choices exist
+                if (_currentConversation.Choices != null && _currentConversation.Choices.Count > 0)
+                {
+                    DisplayChoices(_currentConversation.Choices);
+                }
+                else
+                {
+                    EndConversation();
+                }
+            }
+        }
+
+        private void DisplayChoices(List<DialogueChoice> choices)
+        {
+            if (_choicesContainer != null) _choicesContainer.SetActive(true);
+
+            for (int i = 0; i < _choiceButtons.Length; i++)
+            {
+                if (i < choices.Count)
+                {
+                    int choiceIndex = i;
+                    _choiceButtons[i].gameObject.SetActive(true);
+                    if (_choiceTexts[i] != null)
+                    {
+                        _choiceTexts[i].text = choices[i].ChoiceText;
+                    }
+                    _choiceButtons[i].onClick.RemoveAllListeners();
+                    _choiceButtons[i].onClick.AddListener(() => SelectChoice(choiceIndex));
+                }
+                else
+                {
+                    _choiceButtons[i].gameObject.SetActive(false);
+                }
+            }
+        }
+
+        public void SelectChoice(int choiceIndex)
+        {
+            if (_currentConversation == null || choiceIndex >= _currentConversation.Choices.Count) return;
+
+            var chosen = _currentConversation.Choices[choiceIndex];
+
+            // If an emergency option was selected (Chapter 6), notify system
+            if (chosen.EmergencyOption != EmergencyRepairOption.None)
+            {
+                UIEventBus.PublishEmergencyOption(chosen.EmergencyOption);
+            }
+
+            if (_choicesContainer != null) _choicesContainer.SetActive(false);
+
+            // Follow branch if next conversation specified
+            if (!string.IsNullOrEmpty(chosen.ResultingConversationId))
+            {
+                StartConversationById(chosen.ResultingConversationId, _onConversationCompleteCallback);
+            }
+            else
+            {
+                EndConversation();
+            }
+        }
+
+        private void EndConversation()
+        {
+            var completedConv = _currentConversation;
+            _currentConversation = null;
+
+            _subtitleSystem?.HideSubtitles();
+            if (_choicesContainer != null) _choicesContainer.SetActive(false);
+            if (_continueIndicator != null) _continueIndicator.SetActive(false);
+
+            Hide(false, () =>
+            {
+                completedConv?.OnConversationCompleted?.Invoke();
+                _onConversationCompleteCallback?.Invoke();
+                UIEventBus.PublishUIStateChanged(UIState.GameplayHUD);
+            });
+        }
+    }
+}

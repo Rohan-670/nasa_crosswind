@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d17d177157259c5a2e4ba5d23bfc8b9, type: 3}
+  m_Name: Mission1_Ch1_Arrival
+  m_EditorClassIdentifier: 
+  ConversationId: Mission1_Ch1_Arrival
+  MissionChapter: 'Chapter 1: Arrival on the Moon'
+  TriggerType: 1
+  Lines:
+  - Speaker: 0
+    Expression: 0
+    DialogueText: 'Everyone, welcome to the lunar south pole. Today, we begin a new chapter in exploration.'
+    EducationalConceptNote: 'The Lunar South Pole features peaks of near-constant solar illumination.'
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+  - Speaker: 1
+    Expression: 1
+    DialogueText: 'Habitat systems are ready for inspection. I want to check the power distribution first.'
+    EducationalConceptNote: 'Power distribution on the Moon requires high-voltage DC cabling.'
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+  - Speaker: 2
+    Expression: 1
+    DialogueText: 'I can already see interesting geological formations near the landing zone.'
+    EducationalConceptNote: 'Permanently shadowed craters hold ancient billion-year-old water ice.'
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+  - Speaker: 3
+    Expression: 0
+    DialogueText: 'Before anyone explores, let us confirm everyone''s health and equipment.'
+    EducationalConceptNote: 'In 1/6th gravity, astronauts must monitor oxygen consumption and heart rate.'
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+  - Speaker: 4
+    Expression: 0
+    DialogueText: 'Welcome, crew. Initial habitat activation is available.'
+    EducationalConceptNote: 'ORION monitors habitat life support, power, and navigational hazards.'
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+  Choices:
+  - ChoiceText: 'Commander Elena, let us inspect the habitat airlock first.'
+    EducationalHint: 'The airlock maintains station pressure and removes clingy lunar dust.'
+    ResultingConversationId: ''
+    EmergencyOption: 0
+  - ChoiceText: 'Marcus, let us verify the solar array power line.'
+    EducationalHint: 'Solar panels provide the main energy for oxygen scrubbers.'
+    ResultingConversationId: ''
+    EmergencyOption: 0
+  - ChoiceText: 'Daniel and Aisha, let us run a full equipment diagnostic.'
+    EducationalHint: 'Medical monitoring ensures crew stamina in extreme space environments.'
+    ResultingConversationId: ''
+    EmergencyOption: 0
+  NextConversationId: ''
+  IsCinematicConversation: 0
+  OnConversationCompleted:
+    m_PersistentCalls:
+      m_Calls: []

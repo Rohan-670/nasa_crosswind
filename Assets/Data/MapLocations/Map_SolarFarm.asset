@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92f9b277fe195929a438f0d53ad59bac, type: 3}
+  m_Name: Map_SolarFarm
+  m_EditorClassIdentifier: 
+  LocationId: LOC_SOLAR
+  LocationName: Solar Farm
+  FacilityType: 1
+  GridSector: H-8
+  WorldPosition: {x: 120.0, y: 25.0, z: 160.0}
+  FacilityDescription: "High-efficiency vertical solar arrays installed on the sunlit ridge of Shackleton Crater."
+  EducationalScienceFact: "The peaks of eternal light at the Lunar South Pole receive near-continuous sunlight throughout the entire year!"
+  IsDiscoveredByDefault: 1
+  LocationThumbnail: {fileID: 0}

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92f9b277fe195929a438f0d53ad59bac, type: 3}
+  m_Name: Map_EquipmentStorage
+  m_EditorClassIdentifier: 
+  LocationId: LOC_STORAGE
+  LocationName: Equipment Storage
+  FacilityType: 0
+  GridSector: D-3
+  WorldPosition: {x: -25.0, y: 0.0, z: -60.0}
+  FacilityDescription: "Secure container cache for EVA suits, battery reserves, and mechanical spares."
+  EducationalScienceFact: "Spacesuits are tiny personal spaceships that provide 100% pure oxygen, heating, cooling, and micrometeoroid protection."
+  IsDiscoveredByDefault: 1
+  LocationThumbnail: {fileID: 0}

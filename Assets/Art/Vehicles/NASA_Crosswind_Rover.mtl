@@ -1,0 +1,82 @@
+# NASA Crosswind Exploration Rover Material Library
+# Formatted for Unity Standard / URP Importer
+
+newmtl Mtl_NASA_Body
+Ka 1.000 1.000 1.000
+Kd 0.920 0.930 0.950
+Ks 0.350 0.350 0.350
+Ns 64.0
+d 1.0
+illum 2
+map_Kd Textures/rover_hull_albedo.png
+
+newmtl Mtl_NASA_DarkMetal
+Ka 1.000 1.000 1.000
+Kd 0.180 0.200 0.230
+Ks 0.500 0.500 0.520
+Ns 96.0
+d 1.0
+illum 2
+map_Kd Textures/rover_hull_albedo.png
+
+newmtl Mtl_NASA_Wheel
+Ka 1.000 1.000 1.000
+Kd 0.140 0.150 0.160
+Ks 0.250 0.250 0.250
+Ns 32.0
+d 1.0
+illum 2
+map_Kd Textures/rover_wheel_albedo.png
+
+newmtl Mtl_NASA_Solar
+Ka 1.000 1.000 1.000
+Kd 0.080 0.160 0.320
+Ks 0.850 0.880 0.950
+Ns 128.0
+d 1.0
+illum 2
+map_Kd Textures/rover_solar_albedo.png
+
+newmtl Mtl_NASA_GoldFoil
+Ka 1.000 1.000 1.000
+Kd 0.850 0.650 0.120
+Ks 0.950 0.850 0.350
+Ns 100.0
+d 1.0
+illum 2
+map_Kd Textures/rover_foil_albedo.png
+
+newmtl Mtl_NASA_Dish
+Ka 1.000 1.000 1.000
+Kd 0.950 0.950 0.970
+Ks 0.600 0.600 0.600
+Ns 80.0
+d 1.0
+illum 2
+map_Kd Textures/rover_hull_albedo.png
+
+newmtl Mtl_NASA_Glass
+Ka 1.000 1.000 1.000
+Kd 0.250 0.650 0.800
+Ks 0.950 0.980 1.000
+Ns 128.0
+d 0.55
+illum 4
+
+newmtl Mtl_NASA_Sensors
+Ka 1.000 1.000 1.000
+Kd 0.100 0.700 0.850
+Ks 0.900 0.950 1.000
+Ns 120.0
+d 1.0
+illum 2
+map_Kd Textures/rover_emissive.png
+
+newmtl Mtl_NASA_Lights
+Ka 1.000 1.000 1.000
+Kd 0.980 0.980 1.000
+Ks 1.000 1.000 1.000
+Ns 128.0
+d 1.0
+illum 2
+map_Kd Textures/rover_emissive.png

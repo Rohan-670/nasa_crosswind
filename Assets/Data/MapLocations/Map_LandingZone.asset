@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92f9b277fe195929a438f0d53ad59bac, type: 3}
+  m_Name: Map_LandingZone
+  m_EditorClassIdentifier: 
+  LocationId: LOC_LANDING
+  LocationName: Landing Zone
+  FacilityType: 6
+  GridSector: B-2
+  WorldPosition: {x: -180.0, y: 5.0, z: -120.0}
+  FacilityDescription: "Reinforced touchdown pad with protective blast berms to prevent flying dust."
+  EducationalScienceFact: "Rocket engines on the Moon kick up razor-sharp dust particles at bullet speeds because there is no air to slow them down!"
+  IsDiscoveredByDefault: 1
+  LocationThumbnail: {fileID: 0}
