@@ -1,0 +1,29 @@
+﻿fileFormatVersion: 2
+guid: d1e2f3a4000100020003000000001000
+ModelImporter:
+  serializedVersion: 23000
+  internalIDToNameTable: []
+  externalObjects:
+    M_SpaceVehicle_Hull: {fileID: 2100000, guid: c1d2e3f4000100020003000000000100, type: 2}
+    M_SpaceVehicle_Cockpit: {fileID: 2100000, guid: c1d2e3f4000100020003000000000200, type: 2}
+    M_SpaceVehicle_Chassis: {fileID: 2100000, guid: c1d2e3f4000100020003000000000300, type: 2}
+    M_SpaceVehicle_Wheels: {fileID: 2100000, guid: c1d2e3f4000100020003000000000400, type: 2}
+    M_SpaceVehicle_SolarPanels: {fileID: 2100000, guid: c1d2e3f4000100020003000000000500, type: 2}
+    M_SpaceVehicle_Emissive: {fileID: 2100000, guid: c1d2e3f4000100020003000000000600, type: 2}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  meshes:
+    meshCompression: 0
+    isReadable: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    importNormals: 1
+    normalCalculationMode: 1
+    normalSmoothingSource: 0
+    importBlendShapes: 1
+    generateColliders: 0
+  importAnimation: 0
