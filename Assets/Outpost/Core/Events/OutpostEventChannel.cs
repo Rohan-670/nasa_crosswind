@@ -11,6 +11,10 @@ namespace Outpost.Core.Events
         public static event Action<MissionChapterId, string, string> ChapterChanged;
         public static event Action<string> ObjectiveUpdated;
         public static event Action<RepairChoice> RepairChoiceMade;
+        public static event Action<string> MissionCompleted;
+        public static event Action<string, string> MissionRewardAwarded; // rewardTitle, description
+        public static event Action<string> CreditsTriggered;
+        public static event Action<MissionSummaryReport> MissionSummaryPrompted;
 
         // Resource / Life-support Events
         public static event Action<float, float, float, float> TelemetryUpdated; // o2, co2, powerKW, battery%
@@ -48,6 +52,10 @@ namespace Outpost.Core.Events
         public static void RaiseChapterChanged(MissionChapterId id, string title, string obj) => ChapterChanged?.Invoke(id, title, obj);
         public static void RaiseObjectiveUpdated(string obj) => ObjectiveUpdated?.Invoke(obj);
         public static void RaiseRepairChoiceMade(RepairChoice choice) => RepairChoiceMade?.Invoke(choice);
+        public static void RaiseMissionCompleted(string message) => MissionCompleted?.Invoke(message);
+        public static void RaiseMissionRewardAwarded(string title, string desc) => MissionRewardAwarded?.Invoke(title, desc);
+        public static void RaiseCreditsTriggered(string creditsText) => CreditsTriggered?.Invoke(creditsText);
+        public static void RaiseMissionSummaryPrompted(MissionSummaryReport summary) => MissionSummaryPrompted?.Invoke(summary);
 
         public static void RaiseTelemetryUpdated(float o2, float co2, float pwr, float bat) => TelemetryUpdated?.Invoke(o2, co2, pwr, bat);
         public static void RaiseDetailedTelemetryUpdated(ResourceStateData state) => DetailedTelemetryUpdated?.Invoke(state);
@@ -74,5 +82,45 @@ namespace Outpost.Core.Events
         public static void RaiseStrategicChoiceOpened() => StrategicChoiceOpened?.Invoke();
 
         public static void RaisePlaySfx(string cue) => PlaySfx?.Invoke(cue);
+
+        /// <summary>
+        /// Clears all static event subscribers. Essential for isolated unit test execution.
+        /// </summary>
+        public static void ClearAllSubscribers()
+        {
+            ChapterChanged = null;
+            ObjectiveUpdated = null;
+            RepairChoiceMade = null;
+            MissionCompleted = null;
+            MissionRewardAwarded = null;
+            CreditsTriggered = null;
+            MissionSummaryPrompted = null;
+
+            TelemetryUpdated = null;
+            DetailedTelemetryUpdated = null;
+            ResourceAlertTriggered = null;
+            EmergencyTriggered = null;
+            EmergencyStateChanged = null;
+            RepairOutcomeEvaluated = null;
+            FiltrationFeedbackPrompted = null;
+
+            EquipmentStateChanged = null;
+
+            TargetWaypointSet = null;
+            LocationArrived = null;
+            GeoMapToggled = null;
+            InteractionPromptChanged = null;
+
+            DialogueLinePrompted = null;
+            ConversationSequencePrompted = null;
+            DialogueCompleted = null;
+            EducationalFactPrompted = null;
+
+            FiltrationChallengeOpened = null;
+            FiltrationChallengeCompleted = null;
+            StrategicChoiceOpened = null;
+
+            PlaySfx = null;
+        }
     }
 }

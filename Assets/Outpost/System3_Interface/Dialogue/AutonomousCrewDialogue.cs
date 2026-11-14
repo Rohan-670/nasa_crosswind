@@ -55,7 +55,7 @@ namespace Outpost.System3.Interface.Dialogue
 
             switch (chapter)
             {
-                case MissionChapterId.Chapter1_ArrivalOnTheMoon:
+                case MissionChapterId.Chapter1_Arrival:
                     PlaySequence(
                         new DialogueLine(CharacterId.Marcus, "Lander thrusters cooled down nicely, Elena. Landing gear shock absorbers absorbed the 1.6 m/s touchdown perfectly."),
                         new DialogueLine(CharacterId.Elena, "Good work Marcus. Daniel, how is Aisha adapting to the low-gravity transit?"),
@@ -64,7 +64,7 @@ namespace Outpost.System3.Interface.Dialogue
                     );
                     break;
 
-                case MissionChapterId.Chapter2_EstablishingTheOutpost:
+                case MissionChapterId.Chapter2_OutpostEstablishment:
                     PlaySequence(
                         new DialogueLine(CharacterId.Aisha, "Elena, spectrometer data from the solar ridge confirms an ideal albedo. We should expect 98% panel efficiency."),
                         new DialogueLine(CharacterId.Elena, "Excellent. Marcus, make sure the water recycling loop is synchronized with the hydroponic greenhouse."),
@@ -73,7 +73,7 @@ namespace Outpost.System3.Interface.Dialogue
                     );
                     break;
 
-                case MissionChapterId.Chapter3_TheFirstWarning:
+                case MissionChapterId.Chapter3_FirstWarning:
                     PlaySequence(
                         new DialogueLine(CharacterId.Marcus, "Elena, did you see the telemetry spike? Solar array current fluctuated by twelve percent."),
                         new DialogueLine(CharacterId.Elena, "ORION picked it up too, Marcus. A coronal mass ejection heading toward our orbital quadrant."),
@@ -82,25 +82,16 @@ namespace Outpost.System3.Interface.Dialogue
                     );
                     break;
 
-                case MissionChapterId.Chapter4_TheLifeSupportEmergency:
+                case MissionChapterId.Chapter4_LifeSupportCrisis:
                     PlaySequence(
                         new DialogueLine(CharacterId.Marcus, "Elena, Relay Four just blew! Micrometeoroid punctured the secondary power conduit!"),
                         new DialogueLine(CharacterId.Elena, "Daniel, what's the habitat atmosphere reading?"),
                         new DialogueLine(CharacterId.Daniel, "Scrubber pumps have halted. Carbon dioxide is rising—we have less than twenty minutes before levels become toxic!"),
-                        new DialogueLine(CharacterId.Aisha, "We have spare lithium hydroxide canisters in Storage, but Marcus said their mounting brackets aren't compatible!")
+                        new DialogueLine(CharacterId.Marcus, "Square canister, round hole. Just like Apollo 13—we need hoses, cardboard, and duct tape to make an airtight seal!")
                     );
                     break;
 
-                case MissionChapterId.Chapter5_TheFiltrationChallenge:
-                    PlaySequence(
-                        new DialogueLine(CharacterId.Marcus, "Square canister, round hole. Classic engineering nightmare!"),
-                        new DialogueLine(CharacterId.Daniel, "Marcus, what about the spacesuit umbilical hoses and cardboard covers from Aisha's scientific manuals?"),
-                        new DialogueLine(CharacterId.Marcus, "Daniel, you're a genius! If we wrap the cardboard guide with heavy-duty grey duct tape, we can seal the air leak!"),
-                        new DialogueLine(CharacterId.Elena, "Make it happen, team. Just like Apollo 13—calm heads and smart hands.")
-                    );
-                    break;
-
-                case MissionChapterId.Chapter6_SaveTheOutpost:
+                case MissionChapterId.Chapter5_SaveTheOutpost:
                     PlaySequence(
                         new DialogueLine(CharacterId.Elena, "Filtration is holding steady. Now, Marcus, what are our options for that severed solar conduit?"),
                         new DialogueLine(CharacterId.Marcus, "We can either suit up for an immediate EVA, send the rover's robotic arm, or shut down non-essential pods to conserve power."),
@@ -109,7 +100,16 @@ namespace Outpost.System3.Interface.Dialogue
                     );
                     break;
 
-                case MissionChapterId.Chapter7_ANewBeginning:
+                case MissionChapterId.Chapter6_Recovery:
+                    PlaySequence(
+                        new DialogueLine(CharacterId.Elena, "Grid is stable. Marcus, begin restoring secondary sub-buses and greenhouse grow lights."),
+                        new DialogueLine(CharacterId.Marcus, "Substation breakers engaged. Water recycler and hydroponics are running green!"),
+                        new DialogueLine(CharacterId.Daniel, "All crew vitals checked: oxygen absorption nominal, radiation dosimeters well within safe limits."),
+                        new DialogueLine(CharacterId.Aisha, "Science lab instrumentation calibrated. Logging complete outpost recovery to station archives.")
+                    );
+                    break;
+
+                case MissionChapterId.Chapter7_Ending:
                     PlaySequence(
                         new DialogueLine(CharacterId.Elena, "Look at that Earthrise through the cupola window, crew. Outpost Alpha is running at full capacity."),
                         new DialogueLine(CharacterId.Marcus, "Solar grid is humming, scrubbers are pristine, and rover batteries are fully topped off."),

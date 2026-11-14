@@ -16,6 +16,7 @@ namespace Outpost.System1.Gameplay.Emergency
         LifeSupportFailure,
         FiltrationAssembly,
         StrategicRepairPending,
+        Recovery,
         FullyResolved
     }
 
@@ -33,6 +34,7 @@ namespace Outpost.System1.Gameplay.Emergency
 
         public EmergencyStage CurrentStage => currentStage;
         public bool IsEmergencyActive => GetActiveEmergencies().Count > 0 || (currentStage >= EmergencyStage.MicrometeoroidImpact && currentStage < EmergencyStage.FullyResolved);
+        public bool IsEmergencyActiveByType(EmergencyType type) => GetEmergency(type)?.IsActive ?? false;
 
         public event Action<EmergencyStage> OnEmergencyStageChanged;
         public event Action<EmergencyModel> OnEmergencyTriggered;
@@ -54,6 +56,8 @@ namespace Outpost.System1.Gameplay.Emergency
             EnsureInitialized();
         }
 
+        private bool isSubscribed = false;
+
         public void EnsureInitialized()
         {
             if (Instance == null)
@@ -65,22 +69,41 @@ namespace Outpost.System1.Gameplay.Emergency
             {
                 InitializeEmergencies();
             }
+
+            SubscribeEvents();
         }
 
         private void OnDestroy()
         {
             if (Instance == this) Instance = null;
+            UnsubscribeEvents();
         }
 
         private void OnEnable()
         {
+            SubscribeEvents();
+        }
+
+        private void OnDisable()
+        {
+            UnsubscribeEvents();
+        }
+
+        public void SubscribeEvents()
+        {
+            if (isSubscribed) return;
+            isSubscribed = true;
+
             OutpostEventChannel.ChapterChanged += HandleChapterChanged;
             OutpostEventChannel.FiltrationChallengeCompleted += HandleFiltrationChallengeCompleted;
             OutpostEventChannel.RepairChoiceMade += HandleRepairChoiceMade;
         }
 
-        private void OnDisable()
+        public void UnsubscribeEvents()
         {
+            if (!isSubscribed) return;
+            isSubscribed = false;
+
             OutpostEventChannel.ChapterChanged -= HandleChapterChanged;
             OutpostEventChannel.FiltrationChallengeCompleted -= HandleFiltrationChallengeCompleted;
             OutpostEventChannel.RepairChoiceMade -= HandleRepairChoiceMade;
@@ -230,15 +253,18 @@ namespace Outpost.System1.Gameplay.Emergency
             OutpostEventChannel.RaisePlaySfx("alarm_siren");
         }
 
-        public void ResolveEmergency(EmergencyType type)
+        public void ResolveEmergency(EmergencyType type, bool applyRecovery = true)
         {
             var emergency = emergencies.Find(e => e.Type == type);
             if (emergency == null) return;
 
             emergency.Status = EmergencyStatus.Resolved;
 
-            // Apply recovery state
-            ApplyEmergencyRecovery(emergency);
+            // Apply recovery state if requested
+            if (applyRecovery)
+            {
+                ApplyEmergencyRecovery(emergency);
+            }
 
             OnEmergencyResolved?.Invoke(emergency);
             OutpostEventChannel.RaiseEmergencyStateChanged(emergency);
@@ -420,46 +446,57 @@ namespace Outpost.System1.Gameplay.Emergency
             }
         }
 
+        private bool isApplyingRepairChoice = false;
+
         public RepairOutcomeData ApplyRepairChoice(RepairChoice choice)
         {
-            RepairOutcomeData outcome = EvaluateRepairChoice(choice);
-            if (outcome == null) return null;
+            if (isApplyingRepairChoice) return null;
+            isApplyingRepairChoice = true;
 
-            // Apply resource consequences to ResourceManager
-            if (ResourceManager.Instance != null)
+            try
             {
-                var state = ResourceManager.Instance.CurrentState;
-                if (outcome.CrewHealthImpactPercent < 0f)
+                RepairOutcomeData outcome = EvaluateRepairChoice(choice);
+                if (outcome == null) return null;
+
+                // Apply resource consequences to ResourceManager
+                if (ResourceManager.Instance != null)
                 {
-                    state.CrewHealthPercent = Mathf.Clamp(state.CrewHealthPercent + outcome.CrewHealthImpactPercent, 0f, 100f);
-                }
-                if (outcome.OxygenCostLiters > 0f)
-                {
-                    state.OxygenCurrentLiters = Mathf.Clamp(state.OxygenCurrentLiters - outcome.OxygenCostLiters, 0f, state.OxygenMaxCapacityLiters);
-                }
-                if (outcome.BatteryCostKwh > 0f)
-                {
-                    state.BatteryChargeKwh = Mathf.Clamp(state.BatteryChargeKwh - outcome.BatteryCostKwh, 0f, state.BatteryCapacityKwh);
+                    var state = ResourceManager.Instance.CurrentState;
+                    if (outcome.CrewHealthImpactPercent < 0f)
+                    {
+                        state.CrewHealthPercent = Mathf.Clamp(state.CrewHealthPercent + outcome.CrewHealthImpactPercent, 0f, 100f);
+                    }
+                    if (outcome.OxygenCostLiters > 0f)
+                    {
+                        state.OxygenCurrentLiters = Mathf.Clamp(state.OxygenCurrentLiters - outcome.OxygenCostLiters, 0f, state.OxygenMaxCapacityLiters);
+                    }
+                    if (outcome.BatteryCostKwh > 0f)
+                    {
+                        state.BatteryChargeKwh = Mathf.Clamp(state.BatteryChargeKwh - outcome.BatteryCostKwh, 0f, state.BatteryCapacityKwh);
+                    }
+
+                    state.SolarGenerationKw = outcome.RestoredPowerKw;
+                    state.AverageEquipmentConditionPercent = outcome.EquipmentConditionPercent;
+                    state.GridStatus = PowerGridStatus.Nominal;
+                    state.IsEmergencyActive = false;
                 }
 
-                state.SolarGenerationKw = outcome.RestoredPowerKw;
-                state.AverageEquipmentConditionPercent = outcome.EquipmentConditionPercent;
-                state.GridStatus = PowerGridStatus.Nominal;
-                state.IsEmergencyActive = false;
+                // Resolve solar and electrical emergencies (choice outcome already applied above)
+                ResolveEmergency(EmergencyType.SolarPanelDamage, false);
+                ResolveEmergency(EmergencyType.ElectricalDistributionFault, false);
+
+                SetStage(EmergencyStage.FullyResolved);
+
+                OnRepairOutcomeApplied?.Invoke(outcome);
+                OutpostEventChannel.RaiseRepairOutcomeEvaluated(outcome);
+                OutpostEventChannel.RaisePlaySfx("victory_chime");
+
+                return outcome;
             }
-
-            // Resolve solar and electrical emergencies
-            ResolveEmergency(EmergencyType.SolarPanelDamage);
-            ResolveEmergency(EmergencyType.ElectricalDistributionFault);
-
-            SetStage(EmergencyStage.FullyResolved);
-
-            OnRepairOutcomeApplied?.Invoke(outcome);
-            OutpostEventChannel.RaiseRepairOutcomeEvaluated(outcome);
-            OutpostEventChannel.RaiseRepairChoiceMade(choice);
-            OutpostEventChannel.RaisePlaySfx("victory_chime");
-
-            return outcome;
+            finally
+            {
+                isApplyingRepairChoice = false;
+            }
         }
 
         #endregion
@@ -476,22 +513,22 @@ namespace Outpost.System1.Gameplay.Emergency
         {
             switch (chapter)
             {
-                case MissionChapterId.Chapter3_TheFirstWarning:
+                case MissionChapterId.Chapter3_FirstWarning:
                     SetStage(EmergencyStage.SolarActivityWarning);
                     break;
-                case MissionChapterId.Chapter4_TheLifeSupportEmergency:
+                case MissionChapterId.Chapter4_LifeSupportCrisis:
                     SetStage(EmergencyStage.LifeSupportFailure);
                     TriggerEmergency(EmergencyType.SolarPanelDamage);
                     TriggerEmergency(EmergencyType.ElectricalDistributionFault);
                     TriggerEmergency(EmergencyType.CarbonDioxideAccumulation);
                     break;
-                case MissionChapterId.Chapter5_TheFiltrationChallenge:
-                    SetStage(EmergencyStage.FiltrationAssembly);
-                    break;
-                case MissionChapterId.Chapter6_SaveTheOutpost:
+                case MissionChapterId.Chapter5_SaveTheOutpost:
                     SetStage(EmergencyStage.StrategicRepairPending);
                     break;
-                case MissionChapterId.Chapter7_ANewBeginning:
+                case MissionChapterId.Chapter6_Recovery:
+                    SetStage(EmergencyStage.Recovery);
+                    break;
+                case MissionChapterId.Chapter7_Ending:
                     SetStage(EmergencyStage.FullyResolved);
                     ResolveEmergency(EmergencyType.SolarPanelDamage);
                     ResolveEmergency(EmergencyType.ElectricalDistributionFault);

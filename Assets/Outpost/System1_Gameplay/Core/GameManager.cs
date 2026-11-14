@@ -12,8 +12,9 @@ namespace Outpost.System1.Gameplay.Core
         OutpostEstablishment,   // Chapter 2
         SolarWarning,           // Chapter 3
         EmergencyLifeSupport,   // Chapter 4
-        FiltrationPuzzle,       // Chapter 5
-        StrategicDecision,      // Chapter 6
+        FiltrationPuzzle,       // Chapter 4 sub-state / Minigame
+        StrategicDecision,      // Chapter 5
+        Recovery,               // Chapter 6
         MissionComplete,        // Chapter 7
         Paused
     }
@@ -51,14 +52,26 @@ namespace Outpost.System1.Gameplay.Core
             if (Instance == null)
             {
                 Instance = this;
-                DontDestroyOnLoad(gameObject);
+                if (Application.isPlaying) DontDestroyOnLoad(gameObject);
             }
-            else
+            else if (Instance != this)
             {
-                Destroy(gameObject);
+                if (Application.isPlaying) Destroy(gameObject);
+                else DestroyImmediate(gameObject);
                 return;
             }
 
+            EnsureInitialized();
+        }
+
+        private void OnDestroy()
+        {
+            if (Instance == this) Instance = null;
+        }
+
+        public void EnsureInitialized()
+        {
+            if (Instance == null) Instance = this;
             LocateSubsystems();
         }
 
@@ -148,25 +161,25 @@ namespace Outpost.System1.Gameplay.Core
         {
             switch (id)
             {
-                case MissionChapterId.Chapter1_ArrivalOnTheMoon:
+                case MissionChapterId.Chapter1_Arrival:
                     SetState(GameplayState.LandedArrival);
                     break;
-                case MissionChapterId.Chapter2_EstablishingTheOutpost:
+                case MissionChapterId.Chapter2_OutpostEstablishment:
                     SetState(GameplayState.OutpostEstablishment);
                     break;
-                case MissionChapterId.Chapter3_TheFirstWarning:
+                case MissionChapterId.Chapter3_FirstWarning:
                     SetState(GameplayState.SolarWarning);
                     break;
-                case MissionChapterId.Chapter4_TheLifeSupportEmergency:
+                case MissionChapterId.Chapter4_LifeSupportCrisis:
                     SetState(GameplayState.EmergencyLifeSupport);
                     break;
-                case MissionChapterId.Chapter5_TheFiltrationChallenge:
-                    SetState(GameplayState.FiltrationPuzzle);
-                    break;
-                case MissionChapterId.Chapter6_SaveTheOutpost:
+                case MissionChapterId.Chapter5_SaveTheOutpost:
                     SetState(GameplayState.StrategicDecision);
                     break;
-                case MissionChapterId.Chapter7_ANewBeginning:
+                case MissionChapterId.Chapter6_Recovery:
+                    SetState(GameplayState.Recovery);
+                    break;
+                case MissionChapterId.Chapter7_Ending:
                     SetState(GameplayState.MissionComplete);
                     break;
             }
@@ -184,7 +197,7 @@ namespace Outpost.System1.Gameplay.Core
 
         private void HandleFiltrationPuzzleCompleted(bool _)
         {
-            SetState(GameplayState.StrategicDecision);
+            SetState(GameplayState.EmergencyLifeSupport);
         }
 
         private void HandleStrategicChoiceOpened()
@@ -194,7 +207,7 @@ namespace Outpost.System1.Gameplay.Core
 
         private void HandleRepairChoiceMade(RepairChoice _)
         {
-            SetState(GameplayState.MissionComplete);
+            SetState(GameplayState.Recovery);
         }
     }
 }

@@ -14,7 +14,10 @@ namespace Outpost.Core.Data
         RoverStation,           // 7. Lunar rover garage and charging pad
         EquipmentStorage,       // 8. Airway, spare canisters, tools
         GeologicalResearchArea, // 9. Crater rim & water-ice volatiles
-        EmergencyBreachSite     // 10. Damaged electrical relay junction
+        EmergencyBreachSite,    // 10. Damaged electrical relay junction
+
+        // Compatibility alias
+        ScienceLab = ResearchLaboratory
     }
 
     [Serializable]

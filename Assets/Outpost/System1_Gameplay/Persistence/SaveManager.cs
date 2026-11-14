@@ -25,21 +25,55 @@ namespace Outpost.System1.Gameplay.Persistence
     {
         private const string SaveKey = "Outpost_Mission1_SaveData";
 
+        private bool isSubscribed = false;
+
         public static SaveManager Instance { get; private set; }
 
         private void Awake()
         {
             if (Instance == null) Instance = this;
-            else Destroy(gameObject);
+            else if (Instance != this)
+            {
+                if (Application.isPlaying) Destroy(gameObject);
+                else DestroyImmediate(gameObject);
+                return;
+            }
+
+            EnsureInitialized();
+        }
+
+        private void OnDestroy()
+        {
+            if (Instance == this) Instance = null;
+        }
+
+        public void EnsureInitialized()
+        {
+            if (Instance == null) Instance = this;
+            SubscribeEvents();
         }
 
         private void OnEnable()
         {
-            OutpostEventChannel.ChapterChanged += HandleAutoSaveOnChapter;
+            SubscribeEvents();
         }
 
         private void OnDisable()
         {
+            UnsubscribeEvents();
+        }
+
+        public void SubscribeEvents()
+        {
+            if (isSubscribed) return;
+            isSubscribed = true;
+            OutpostEventChannel.ChapterChanged += HandleAutoSaveOnChapter;
+        }
+
+        public void UnsubscribeEvents()
+        {
+            if (!isSubscribed) return;
+            isSubscribed = false;
             OutpostEventChannel.ChapterChanged -= HandleAutoSaveOnChapter;
         }
 

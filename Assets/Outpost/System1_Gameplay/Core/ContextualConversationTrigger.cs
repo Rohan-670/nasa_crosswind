@@ -9,9 +9,10 @@ using Outpost.System1.Gameplay.Equipment;
 namespace Outpost.System1.Gameplay.Core
 {
     /// <summary>
-    /// Prepares and dispatches contextual gameplay conversations between astronauts.
+    /// Prepares and dispatches contextual gameplay conversations between astronauts:
+    /// Commander Elena, Engineer Marcus, Scientist Aisha, Medical Officer Daniel, and AI Assistant ORION.
     /// Emits ConversationSequence events to Computer 3's DialogueUI without rendering any visual UI.
-    /// Conversations are triggered exclusively by actual gameplay events.
+    /// Conversations are triggered exclusively by actual gameplay milestones across Chapters 1 to 7.
     /// </summary>
     public class ContextualConversationTrigger : MonoBehaviour
     {
@@ -51,6 +52,7 @@ namespace Outpost.System1.Gameplay.Core
             OutpostEventChannel.StrategicChoiceOpened += HandleStrategicChoiceOpened;
             OutpostEventChannel.ResourceAlertTriggered += HandleResourceAlertTriggered;
             OutpostEventChannel.EmergencyStateChanged += HandleEmergencyStateChanged;
+            OutpostEventChannel.MissionCompleted += HandleMissionCompleted;
         }
 
         private void OnDisable()
@@ -61,12 +63,16 @@ namespace Outpost.System1.Gameplay.Core
             OutpostEventChannel.StrategicChoiceOpened -= HandleStrategicChoiceOpened;
             OutpostEventChannel.ResourceAlertTriggered -= HandleResourceAlertTriggered;
             OutpostEventChannel.EmergencyStateChanged -= HandleEmergencyStateChanged;
+            OutpostEventChannel.MissionCompleted -= HandleMissionCompleted;
         }
 
         private void HandleLocationArrived(StationLocationId locationId)
         {
             switch (locationId)
             {
+                case StationLocationId.MainHabitat:
+                    TriggerOrionIntroConversation();
+                    break;
                 case StationLocationId.SolarFarm:
                     TriggerSolarActivationConversation();
                     break;
@@ -81,9 +87,20 @@ namespace Outpost.System1.Gameplay.Core
 
         private void HandleChapterChanged(MissionChapterId chapter, string title, string obj)
         {
-            if (chapter == MissionChapterId.Chapter3_TheFirstWarning)
+            switch (chapter)
             {
-                TriggerScientificReportConversation();
+                case MissionChapterId.Chapter1_Arrival:
+                    TriggerArrivalBriefingConversation();
+                    break;
+                case MissionChapterId.Chapter3_FirstWarning:
+                    TriggerScientificReportConversation();
+                    break;
+                case MissionChapterId.Chapter6_Recovery:
+                    TriggerRecoveryStatusConversation();
+                    break;
+                case MissionChapterId.Chapter7_Ending:
+                    TriggerMissionEndingConversation();
+                    break;
             }
         }
 
@@ -118,10 +135,51 @@ namespace Outpost.System1.Gameplay.Core
             }
         }
 
+        private void HandleMissionCompleted(string _)
+        {
+            TriggerMissionEndingConversation(true);
+        }
+
         #region Contextual Conversation Definitions & Dispatch
 
         /// <summary>
-        /// Phase 2 Example 1: Crew discussion when solar panels are activated.
+        /// Chapter 1: Crew arrival briefing at touchdown.
+        /// </summary>
+        public void TriggerArrivalBriefingConversation(bool force = false)
+        {
+            const string id = "conv_arrival_briefing";
+            if (!force && triggeredConversations.Contains(id)) return;
+            triggeredConversations.Add(id);
+
+            ConversationSequence seq = new ConversationSequence(id, "Arrival on the Moon");
+            seq.AddLine(CharacterId.Marcus, "Lander thrusters cooled down nicely, Elena. Landing gear shock absorbers handled the 1.6 m/s² touchdown perfectly.");
+            seq.AddLine(CharacterId.Elena, "Good work Marcus. Daniel, how is Aisha adapting to the low-gravity transit?");
+            seq.AddLine(CharacterId.Daniel, "Vitals are exceptional, Commander. Aisha was already calibrating her spectrometer before the dust even settled!");
+            seq.AddLine(CharacterId.Aisha, "I can see the rim of Shackleton Crater from here! Billions of years of frozen history right in front of us.");
+
+            DispatchConversation(seq);
+        }
+
+        /// <summary>
+        /// Chapter 1: ORION AI Assistant introduction upon entering habitat.
+        /// </summary>
+        public void TriggerOrionIntroConversation(bool force = false)
+        {
+            const string id = "conv_orion_intro";
+            if (!force && triggeredConversations.Contains(id)) return;
+            triggeredConversations.Add(id);
+
+            ConversationSequence seq = new ConversationSequence(id, "O.R.I.O.N. Initialization");
+            seq.AddLine(CharacterId.Orion, "Greetings, Commander Elena and crew. Onboard Robotic Intelligence and Operations Network is now fully active.");
+            seq.AddLine(CharacterId.Elena, "ORION, report status of our central life-support bus and navigation sensors.");
+            seq.AddLine(CharacterId.Orion, "All sensors nominal. Press [M] at any time to open the Outpost Geo Map. I am programmed to monitor environmental safety, navigation waypoints, and life-support stability.");
+            seq.AddLine(CharacterId.Marcus, "Nice to have you watching our backs, ORION. Let's get this outpost operational!");
+
+            DispatchConversation(seq);
+        }
+
+        /// <summary>
+        /// Chapter 2: Crew discussion when solar panels are activated.
         /// </summary>
         public void TriggerSolarActivationConversation(bool force = false)
         {
@@ -138,7 +196,7 @@ namespace Outpost.System1.Gameplay.Core
         }
 
         /// <summary>
-        /// Phase 2 Example 2: Elena asks Marcus about electrical output.
+        /// Chapter 2: Elena asks Marcus about electrical output.
         /// </summary>
         public void TriggerElectricalOutputReport(bool force = false)
         {
@@ -155,7 +213,7 @@ namespace Outpost.System1.Gameplay.Core
         }
 
         /// <summary>
-        /// Phase 2 Example 3: Aisha explains the greenhouse's scientific purpose.
+        /// Chapter 2: Aisha explains the greenhouse's scientific purpose.
         /// </summary>
         public void TriggerGreenhouseScienceExplanation(bool force = false)
         {
@@ -173,7 +231,7 @@ namespace Outpost.System1.Gameplay.Core
         }
 
         /// <summary>
-        /// Phase 2 Example 4: Daniel explains the importance of water availability.
+        /// Chapter 2: Daniel explains the importance of water availability.
         /// </summary>
         public void TriggerWaterImportanceDiscussion(bool force = false)
         {
@@ -190,25 +248,7 @@ namespace Outpost.System1.Gameplay.Core
         }
 
         /// <summary>
-        /// Phase 3 Example 1: Marcus requests Elena's approval before an external repair.
-        /// </summary>
-        public void TriggerEvaApprovalConversation(bool force = false)
-        {
-            const string id = "conv_eva_approval";
-            if (!force && triggeredConversations.Contains(id)) return;
-            triggeredConversations.Add(id);
-
-            ConversationSequence seq = new ConversationSequence(id, "EVA Repair Authorization");
-            seq.AddLine(CharacterId.Marcus, "Commander, I've pre-breathed pure O2 and suited up. If I go out on EVA, I can manually splice the high-voltage relay in forty minutes.");
-            seq.AddLine(CharacterId.Elena, "Marcus, radiation monitors are still elevated from the coronal flare. An external spacewalk carries genuine radiation exposure.");
-            seq.AddLine(CharacterId.Marcus, "I know the risks, Elena. But if we don't restore the primary array, our life-support batteries will drain completely. I need your green light.");
-            seq.AddLine(CharacterId.Elena, "Understood, Marcus. Review the radiation threshold with Daniel first. If dosimeter readings cross five millisieverts, abort immediately.");
-
-            DispatchConversation(seq);
-        }
-
-        /// <summary>
-        /// Phase 3 Example 2: Aisha reports scientific observations.
+        /// Chapter 3: Aisha reports scientific observations of solar flare.
         /// </summary>
         public void TriggerScientificReportConversation(bool force = false)
         {
@@ -226,7 +266,7 @@ namespace Outpost.System1.Gameplay.Core
         }
 
         /// <summary>
-        /// Phase 3 Example 3: Daniel warns the crew about health risks.
+        /// Chapter 4: Daniel warns the crew about hypercapnia health risks.
         /// </summary>
         public void TriggerHealthWarningConversation(bool force = false)
         {
@@ -244,7 +284,7 @@ namespace Outpost.System1.Gameplay.Core
         }
 
         /// <summary>
-        /// Phase 3 Example 4: Elena coordinates the repair.
+        /// Chapter 5: Elena coordinates the repair choices with crew.
         /// </summary>
         public void TriggerRepairCoordinationConversation(bool force = false)
         {
@@ -261,10 +301,71 @@ namespace Outpost.System1.Gameplay.Core
             DispatchConversation(seq);
         }
 
+        /// <summary>
+        /// Chapter 5: Marcus requests Elena's approval before external EVA repair.
+        /// </summary>
+        public void TriggerEvaApprovalConversation(bool force = false)
+        {
+            const string id = "conv_eva_approval";
+            if (!force && triggeredConversations.Contains(id)) return;
+            triggeredConversations.Add(id);
+
+            ConversationSequence seq = new ConversationSequence(id, "EVA Repair Authorization");
+            seq.AddLine(CharacterId.Marcus, "Commander, I've pre-breathed pure O2 and suited up. If I go out on EVA, I can manually splice the high-voltage relay in forty minutes.");
+            seq.AddLine(CharacterId.Elena, "Marcus, radiation monitors are still elevated from the coronal flare. An external spacewalk carries genuine radiation exposure.");
+            seq.AddLine(CharacterId.Marcus, "I know the risks, Elena. But if we don't restore the primary array, our life-support batteries will drain completely. I need your green light.");
+            seq.AddLine(CharacterId.Elena, "Understood, Marcus. Review the radiation threshold with Daniel first. If dosimeter readings cross five millisieverts, abort immediately.");
+
+            DispatchConversation(seq);
+        }
+
+        /// <summary>
+        /// Chapter 6: Crew recovery and equipment restoration review.
+        /// </summary>
+        public void TriggerRecoveryStatusConversation(bool force = false)
+        {
+            const string id = "conv_recovery_status";
+            if (!force && triggeredConversations.Contains(id)) return;
+            triggeredConversations.Add(id);
+
+            ConversationSequence seq = new ConversationSequence(id, "Outpost Stabilization");
+            seq.AddLine(CharacterId.Elena, "All hands: primary power grid is stable. Marcus, begin powering on secondary sub-buses.");
+            seq.AddLine(CharacterId.Marcus, "Substation breakers reset cleanly. Hydroponic grow lights are illuminated, and thermal radiator valves are cycling at nominal pressure.");
+            seq.AddLine(CharacterId.Aisha, "Spectrometer sensors report zero radiation leakage inside the habitat shell. The regolith shielding held up beautifully.");
+            seq.AddLine(CharacterId.Daniel, "Crew vitals are normalizing across the board. Oxygen is steady at 21%, and carbon dioxide is dropping back down to pristine baseline levels.");
+
+            DispatchConversation(seq);
+        }
+
+        /// <summary>
+        /// Chapter 7: Ending debriefing and Lunar Pioneer celebration.
+        /// </summary>
+        public void TriggerMissionEndingConversation(bool force = false)
+        {
+            const string id = "conv_mission_ending";
+            if (!force && triggeredConversations.Contains(id)) return;
+            triggeredConversations.Add(id);
+
+            ConversationSequence seq = new ConversationSequence(id, "Mission 1 Completion");
+            seq.AddLine(CharacterId.Elena, "Look at that Earthrise through the cupola window, crew. Outpost Alpha is running at full capacity, self-sustaining and secure.");
+            seq.AddLine(CharacterId.Marcus, "Solar arrays tracking the ridge sun, scrubbers humming, and rover batteries fully topped off.");
+            seq.AddLine(CharacterId.Aisha, "Now we can finally begin our scientific exploration of the ancient polar ice in Shackleton Crater!");
+            seq.AddLine(CharacterId.Daniel, "Crew health is 100%. We didn't just survive an emergency—we demonstrated how humanity can live, work, and thrive beyond Earth.");
+            seq.AddLine(CharacterId.Orion, "Outpost Alpha operational readiness: 100%. Commendation awarded: Lunar Pioneer Ribbon. Congratulations, astronauts.");
+
+            DispatchConversation(seq);
+        }
+
         public void TriggerConversationById(string conversationId, bool force = false)
         {
             switch (conversationId)
             {
+                case "conv_arrival_briefing":
+                    TriggerArrivalBriefingConversation(force);
+                    break;
+                case "conv_orion_intro":
+                    TriggerOrionIntroConversation(force);
+                    break;
                 case "conv_solar_activation":
                     TriggerSolarActivationConversation(force);
                     break;
@@ -288,6 +389,12 @@ namespace Outpost.System1.Gameplay.Core
                     break;
                 case "conv_elena_repair_coordination":
                     TriggerRepairCoordinationConversation(force);
+                    break;
+                case "conv_recovery_status":
+                    TriggerRecoveryStatusConversation(force);
+                    break;
+                case "conv_mission_ending":
+                    TriggerMissionEndingConversation(force);
                     break;
             }
         }
