@@ -113,5 +113,6 @@ InitTestScene*.unity*
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
 
-# Local Pre-Reconstruction Backup
-_Backup_PreReconstruction/
+# Local editor temporary folders
+My project (1)/
+

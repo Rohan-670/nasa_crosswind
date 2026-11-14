@@ -1,0 +1,56 @@
+﻿# Materials for NASA Space Exploration Vehicle
+
+newmtl M_SpaceVehicle_Hull
+Ka 1.0 1.0 1.0
+Kd 0.95 0.95 0.96
+Ks 0.4 0.4 0.4
+Ns 80.0
+map_Kd Textures/NASA_SEV_Albedo.png
+map_Bump Textures/NASA_SEV_Normal.png
+map_Ks Textures/NASA_SEV_MetallicSmoothness.png
+
+newmtl M_SpaceVehicle_Cockpit
+Ka 1.0 1.0 1.0
+Kd 0.15 0.28 0.40
+Ks 0.9 0.9 0.9
+Ns 160.0
+d 0.85
+map_Kd Textures/NASA_SEV_Albedo.png
+map_Bump Textures/NASA_SEV_Normal.png
+map_Ke Textures/NASA_SEV_Emission.png
+
+newmtl M_SpaceVehicle_Chassis
+Ka 1.0 1.0 1.0
+Kd 0.35 0.37 0.40
+Ks 0.6 0.6 0.6
+Ns 90.0
+map_Kd Textures/NASA_SEV_Albedo.png
+map_Bump Textures/NASA_SEV_Normal.png
+map_Ks Textures/NASA_SEV_MetallicSmoothness.png
+
+newmtl M_SpaceVehicle_Wheels
+Ka 1.0 1.0 1.0
+Kd 0.22 0.24 0.26
+Ks 0.25 0.25 0.25
+Ns 25.0
+map_Kd Textures/NASA_SEV_Albedo.png
+map_Bump Textures/NASA_SEV_Normal.png
+map_Ks Textures/NASA_SEV_MetallicSmoothness.png
+
+newmtl M_SpaceVehicle_SolarPanels
+Ka 1.0 1.0 1.0
+Kd 0.12 0.24 0.45
+Ks 0.85 0.85 0.85
+Ns 120.0
+map_Kd Textures/NASA_SEV_Albedo.png
+map_Bump Textures/NASA_SEV_Normal.png
+map_Ks Textures/NASA_SEV_MetallicSmoothness.png
+
+newmtl M_SpaceVehicle_Emissive
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.7 0.7 0.7
+Ns 60.0
+map_Kd Textures/NASA_SEV_Albedo.png
+map_Ke Textures/NASA_SEV_Emission.png
+

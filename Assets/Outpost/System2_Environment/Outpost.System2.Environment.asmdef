@@ -1,0 +1,16 @@
+{
+    "name": "Outpost.System2.Environment",
+    "rootNamespace": "Outpost.System2.Environment",
+    "references": [
+        "Outpost.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
