@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using Outpost.UI.HUD;
+using Outpost.UI.Dialogue;
 
 namespace Outpost.UI.Core
 {
@@ -16,10 +17,10 @@ namespace Outpost.UI.Core
 
         // Life Support / Resource Telemetry (Computer 1 Integration)
         public static event Action<OutpostResourceSnapshot> OnResourceSnapshotUpdated;
-        public static event Action<float, float, float> OnOxygenUpdated;      // Current, Max, Rate
-        public static event Action<float, float, float> OnPowerUpdated;       // Current, Max, Rate
-        public static event Action<float, float, float> OnWaterUpdated;       // Current, Max, Rate
-        public static event Action<float, bool> OnCarbonDioxideUpdated;       // PPM, ScrubberActive
+        public static event Action<float, float, float> OnOxygenUpdated;
+        public static event Action<float, float, float> OnPowerUpdated;
+        public static event Action<float, float, float> OnWaterUpdated;
+        public static event Action<float, bool> OnCarbonDioxideUpdated;
 
         // Phase 2 Resource Updates
         public static event Action<float, float, string> OnOxygenDataChanged;
@@ -31,17 +32,21 @@ namespace Outpost.UI.Core
         public static event Action<float, string> OnEquipmentConditionDataChanged;
         public static event Action<int, string> OnSparePartsDataChanged;
 
+        // Phase 3: Camera Framing & Group Discussion (Computer 2 Integration)
+        public static event Action<CameraFramingType, CharacterIdentifier> OnCameraFramingRequested;
+
+        // Phase 3: Emergency & Filtration Challenge (Computer 1 Integration)
+        public static event Action<bool> OnFiltrationChallengeCompleted;
+        public static event Action<EmergencyRepairOption> OnEmergencyOptionSelected;
+
         // Mission & Objectives
-        public static event Action<string, string> OnObjectiveUpdated;        // ID, Description
-        public static event Action<string, Vector3, string> OnWaypointPinned; // ID, WorldPos, Label
+        public static event Action<string, string> OnObjectiveUpdated;
+        public static event Action<string, Vector3, string> OnWaypointPinned;
         public static event Action<string> OnWaypointCleared;
 
         // Notifications & Alerts
         public static event Action<string, string, NotificationType> OnNotificationRequested;
         public static event Action<AlertLevel, string> OnAlertLevelChanged;
-
-        // Emergency Decision (Chapter 6)
-        public static event Action<EmergencyRepairOption> OnEmergencyOptionSelected;
 
         // Triggers
         public static void PublishUIStateChanged(UIState newState) => OnUIStateChanged?.Invoke(newState);
@@ -63,6 +68,12 @@ namespace Outpost.UI.Core
         public static void PublishCrewHealthData(float pct, string exp = "") => OnCrewHealthDataChanged?.Invoke(pct, exp);
         public static void PublishEquipmentConditionData(float pct, string exp = "") => OnEquipmentConditionDataChanged?.Invoke(pct, exp);
         public static void PublishSparePartsData(int count, string exp = "") => OnSparePartsDataChanged?.Invoke(count, exp);
+
+        public static void PublishCameraFraming(CameraFramingType framing, CharacterIdentifier subject) =>
+            OnCameraFramingRequested?.Invoke(framing, subject);
+
+        public static void PublishFiltrationOutcome(bool success) =>
+            OnFiltrationChallengeCompleted?.Invoke(success);
 
         public static void PublishObjective(string id, string desc) => OnObjectiveUpdated?.Invoke(id, desc);
         public static void PublishWaypoint(string id, Vector3 pos, string label) => OnWaypointPinned?.Invoke(id, pos, label);

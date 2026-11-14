@@ -6,6 +6,23 @@ using Outpost.UI.Core;
 
 namespace Outpost.UI.Dialogue
 {
+    public enum CameraFramingType
+    {
+        Default = 0,
+        CloseUpSpeaker = 1,
+        MediumCrewGroup = 2,
+        WideOutpost = 3,
+        FocusEquipment = 4,
+        ORIONHologram = 5
+    }
+
+    [System.Serializable]
+    public struct ListenerReaction
+    {
+        public CharacterIdentifier Listener;
+        public CharacterExpression Expression;
+    }
+
     [System.Serializable]
     public class DialogueLine
     {
@@ -16,6 +33,10 @@ namespace Outpost.UI.Dialogue
         public AudioClip VoiceClip;
         public float DelayAfterLine = 0.5f;
         public bool RequirePlayerClickToAdvance = true;
+
+        [Header("Cinematic & Group Framing")]
+        public CameraFramingType Framing = CameraFramingType.Default;
+        public List<ListenerReaction> CrewReactions = new List<ListenerReaction>();
     }
 
     [System.Serializable]
@@ -35,9 +56,13 @@ namespace Outpost.UI.Dialogue
     public class ConversationData : ScriptableObject
     {
         [Header("Conversation Identification")]
-        public string ConversationId = "Mission1_Ch1_Arrival";
-        public string MissionChapter = "Chapter 1: Arrival on the Moon";
+        public string ConversationId = "Mission1_Scene1_SolarWarning";
+        public string MissionChapter = "Mission 1";
         public ConversationTriggerType TriggerType = ConversationTriggerType.MissionMilestone;
+
+        [Header("Presentation Mode")]
+        public bool IsGroupDiscussion = false;
+        public bool IsCinematicConversation = false;
 
         [Header("Dialogue Sequence")]
         public List<DialogueLine> Lines = new List<DialogueLine>();
@@ -47,7 +72,6 @@ namespace Outpost.UI.Dialogue
 
         [Header("Flow Control")]
         public string NextConversationId = "";
-        public bool IsCinematicConversation = false;
 
         [Header("Completion Events")]
         public UnityEvent OnConversationCompleted;

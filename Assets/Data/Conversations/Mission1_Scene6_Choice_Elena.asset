@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d17d177157259c5a2e4ba5d23bfc8b9, type: 3}
+  m_Name: Mission1_Scene6_Choice_Elena
+  m_EditorClassIdentifier: 
+  ConversationId: Mission1_Scene6_Choice_Elena
+  MissionChapter: 'Chapter 6: Strategy A - Spacewalk'
+  TriggerType: 0
+  IsGroupDiscussion: 1
+  IsCinematicConversation: 0
+  Lines:
+  - Speaker: 0
+    Expression: 3
+    DialogueText: "Suiting up for EVA. Marcus, keep my umbilical comm line open. I'll have the conduit spliced in ten minutes."
+    EducationalConceptNote: "Astronaut EVA: Direct manual dexterity allows rapid high-voltage splicing."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 1
+    CrewReactions: []
+  - Speaker: 3
+    Expression: 0
+    DialogueText: "Monitoring your suit oxygen and heart rate from the airlock console. You're clear to step outside."
+    EducationalConceptNote: "Life-support monitoring: medical officer tracks suit biometric telemetry."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 1
+    CrewReactions: []
+  Choices:
+  NextConversationId: 'Mission1_Scene7_Recovery'
+  OnConversationCompleted:
+    m_PersistentCalls:
+      m_Calls: []

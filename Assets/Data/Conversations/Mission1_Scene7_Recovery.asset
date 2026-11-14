@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d17d177157259c5a2e4ba5d23bfc8b9, type: 3}
+  m_Name: Mission1_Scene7_Recovery
+  m_EditorClassIdentifier: 
+  ConversationId: Mission1_Scene7_Recovery
+  MissionChapter: 'Chapter 7: A New Beginning'
+  TriggerType: 1
+  IsGroupDiscussion: 1
+  IsCinematicConversation: 0
+  Lines:
+  - Speaker: 3
+    Expression: 1
+    DialogueText: "All crew members are accounted for."
+    EducationalConceptNote: "Crew health confirmation: zero injuries, nominal biometrics."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 1
+    CrewReactions: []
+  - Speaker: 1
+    Expression: 1
+    DialogueText: "Critical equipment is back online."
+    EducationalConceptNote: "Power grid restored: 45kW solar input, full electrolysis active."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 1
+    CrewReactions: []
+  - Speaker: 2
+    Expression: 1
+    DialogueText: "The outpost has recovered."
+    EducationalConceptNote: "Atmospheric telemetry: CO2 stabilized at 450 ppm, O2 at 21%."
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 1
+    CrewReactions: []
+  - Speaker: 0
+    Expression: 1
+    DialogueText: "Good work, everyone. We protected the mission by working together."
+    EducationalConceptNote: "Mission 1 complete: humanity has established a permanent foothold on the Moon!"
+    VoiceClip: {fileID: 0}
+    DelayAfterLine: 0.5
+    RequirePlayerClickToAdvance: 1
+    Framing: 2
+    CrewReactions: []
+  Choices:
+  NextConversationId: ''
+  OnConversationCompleted:
+    m_PersistentCalls:
+      m_Calls: []

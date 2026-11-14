@@ -10,12 +10,14 @@ namespace Outpost.UI.Dialogue
 {
     /// <summary>
     /// Master dialogue orchestrator for System 3.
-    /// Manages line transitions, choices, audio playback, and completion events.
+    /// Manages two-person and multi-character group conversations, emotional expressions,
+    /// camera framing directions for Computer 2, branching choices, and completion events.
     /// </summary>
     public class DialogueManager : UIView, IDialogueManager
     {
         [Header("Components")]
         [SerializeField] private CharacterDialoguePresentation _characterPresentation;
+        [SerializeField] private GroupDiscussionPresentation _groupPresentation;
         [SerializeField] private SubtitleSystem _subtitleSystem;
         [SerializeField] private ConversationSequenceManager _sequenceManager;
 
@@ -23,6 +25,7 @@ namespace Outpost.UI.Dialogue
         [SerializeField] private GameObject _choicesContainer;
         [SerializeField] private Button[] _choiceButtons;
         [SerializeField] private TextMeshProUGUI[] _choiceTexts;
+        [SerializeField] private TextMeshProUGUI[] _choiceHintTexts;
 
         [Header("Next Indicator")]
         [SerializeField] private GameObject _continueIndicator;
@@ -39,6 +42,7 @@ namespace Outpost.UI.Dialogue
             base.Awake();
             if (_choicesContainer != null) _choicesContainer.SetActive(false);
             if (_continueIndicator != null) _continueIndicator.SetActive(false);
+            if (_groupPresentation != null) _groupPresentation.SetVisible(false);
         }
 
         private void Update()
@@ -69,6 +73,12 @@ namespace Outpost.UI.Dialogue
 
             Show();
             UIEventBus.PublishUIStateChanged(UIState.Dialogue);
+
+            // Toggle Group Discussion vs Standard Dialogue Mode
+            bool isGroup = conversation.IsGroupDiscussion;
+            if (_groupPresentation != null) _groupPresentation.SetVisible(isGroup);
+            if (_characterPresentation != null) _characterPresentation.gameObject.SetActive(!isGroup);
+
             AdvanceDialogue();
         }
 
@@ -97,13 +107,23 @@ namespace Outpost.UI.Dialogue
             {
                 var line = _currentConversation.Lines[_currentLineIndex];
 
-                // Present speaker portrait and color badge
-                _characterPresentation?.DisplaySpeaker(line.Speaker, line.Expression, line.EducationalConceptNote);
+                // Notify Computer 2 of camera framing request
+                UIEventBus.PublishCameraFraming(line.Framing, line.Speaker);
+
+                // Update visual speaker presentation
+                if (_currentConversation.IsGroupDiscussion && _groupPresentation != null)
+                {
+                    _groupPresentation.SetActiveSpeaker(line.Speaker, line.Expression, line.CrewReactions);
+                }
+                else if (_characterPresentation != null)
+                {
+                    _characterPresentation.DisplaySpeaker(line.Speaker, line.Expression, line.EducationalConceptNote);
+                }
 
                 // Play audio voice clip if available
                 if (line.VoiceClip != null)
                 {
-                    // Play through audio manager or local source
+                    // Audio played via AudioManager
                 }
 
                 // Render typewriter text in subtitles
@@ -137,9 +157,13 @@ namespace Outpost.UI.Dialogue
                 {
                     int choiceIndex = i;
                     _choiceButtons[i].gameObject.SetActive(true);
-                    if (_choiceTexts[i] != null)
+                    if (_choiceTexts != null && i < _choiceTexts.Length && _choiceTexts[i] != null)
                     {
                         _choiceTexts[i].text = choices[i].ChoiceText;
+                    }
+                    if (_choiceHintTexts != null && i < _choiceHintTexts.Length && _choiceHintTexts[i] != null)
+                    {
+                        _choiceHintTexts[i].text = choices[i].EducationalHint;
                     }
                     _choiceButtons[i].onClick.RemoveAllListeners();
                     _choiceButtons[i].onClick.AddListener(() => SelectChoice(choiceIndex));
@@ -184,6 +208,7 @@ namespace Outpost.UI.Dialogue
             _subtitleSystem?.HideSubtitles();
             if (_choicesContainer != null) _choicesContainer.SetActive(false);
             if (_continueIndicator != null) _continueIndicator.SetActive(false);
+            if (_groupPresentation != null) _groupPresentation.SetVisible(false);
 
             Hide(false, () =>
             {
